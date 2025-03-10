@@ -1,2 +1,2 @@
 # interview-prep-guide-website
- "interview preparation guide for job seekers."
+ "interview preparation guide website for job seekers."
