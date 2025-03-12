@@ -1,0 +1,55 @@
+.roadmap-container {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+.roadmap-container h1 {
+    color: #033452;
+}
+
+.roadmap-container label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.roadmap-container select {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.roadmap {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.roadmap-step {
+    padding: 10px;
+    background: white;
+    margin: 10px 0;
+    border-left: 5px solid #033452;
+    border-radius: 5px;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.roadmap-step span {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #033452;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
