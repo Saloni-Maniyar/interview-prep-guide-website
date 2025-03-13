@@ -3,15 +3,14 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { authenticateUser } = require('../middleware/authMiddleware');
 require('dotenv').config();
-
-
 // Secret key for JWT (Store this in .env file later)
 const JWT_SECRET =  process.env.JWT_SECRET;
 
 // Signup Route (User Registration)
 router.post('/signup', async (req, res) => {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
     try {
         // Check if user already exists
@@ -27,8 +26,7 @@ router.post('/signup', async (req, res) => {
         const newUser = new User({
             name,
             email,
-            password: hashedPassword,
-            role
+            password: hashedPassword
         });
 
         await newUser.save();
@@ -56,23 +54,32 @@ router.post('/login', async (req, res) => {
         }
 
         // Generate JWT Token
-        const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
-
+        const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1d' });
+        
+        // Send token as HttpOnly Cookie
+        res.cookie('token', token, { 
+            httpOnly: true, 
+            sameSite: 'strict' 
+        });
+        
+        
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error });
     }
-}); 
+});
 
-// //retrive users
-// router.get('/users',async(req,res)=>{
-//     try{
-//         const users =await User.find();
-//         res.send(users);
-//     }catch(error){
-//         res.status(500).json({message:'Server error',error});
-//     }
-   
-// });
+// Logout Route
+router.post('/logout', (req, res) => {
+    res.clearCookie('token');  // Clear the token cookie
+    res.status(200).json({ message: 'Logout successful' });
+});
+
+
+
+// Protected Route Example
+router.get('/protected-route', authenticateUser, (req, res) => {
+    res.send('You are authenticated and can access this route!');
+});
 
 module.exports = router;
