@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
-const dotenv=require('dotenv');
-const authRoutes=require('./routes/auth');
+const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth');
 // require('dotenv').config();
 dotenv.config();
 const app = express();
@@ -19,7 +19,7 @@ app.use(cookieParser()); //to parse cookies;
 connectDB();
 
 //use auth route 
-app.use('/api/auth',authRoutes);
+app.use('/api/auth', authRoutes);
 // Test Route
 app.get('/', (req, res) => {
     res.send('Backend is working!');
