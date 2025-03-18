@@ -1,11 +1,13 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
-const dotenv = require('dotenv');
+
 const authRoutes = require('./routes/auth');
 // require('dotenv').config();
-dotenv.config();
+
 const app = express();
 
 // Middleware
