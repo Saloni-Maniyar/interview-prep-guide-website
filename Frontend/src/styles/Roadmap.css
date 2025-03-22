@@ -1,14 +1,27 @@
+/* Roadmap container with proper centering */
 .roadmap-container {
     max-width: 600px;
+    height: 75vh;
     margin: auto;
     text-align: center;
-    padding: 20px;
+    padding: 10px;
+    background: linear-gradient(120deg, #f4f1de, #ffffff);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 20%;
 }
 
+/* Heading */
 .roadmap-container h1 {
     color: #033452;
+    font-size: 22px;
+    margin-bottom: 15px;
 }
 
+/* Role selector */
 .roadmap-container label {
     font-weight: bold;
     display: block;
@@ -18,38 +31,59 @@
 .roadmap-container select {
     padding: 10px;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
+/* Steps section with internal scrolling */
 .roadmap {
-    background: #f8f8f8;
-    padding: 20px;
-    border-radius: 10px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
+/* Individual steps with checkbox */
 .roadmap-step {
+    display: flex;
+    align-items: center;
     padding: 10px;
-    background: white;
-    margin: 10px 0;
-    border-left: 5px solid #033452;
+    background: #e3f2fd;
+    margin: 8px 0;
+    border-left: 4px solid #033452;
     border-radius: 5px;
     text-align: left;
-    padding-left: 15px;
+    padding-left: 12px;
 }
 
-.roadmap-step span {
-    font-weight: bold;
+/* Checkbox styling */
+.roadmap-step input[type="checkbox"] {
     margin-right: 10px;
+    transform: scale(1.2);
+    cursor: pointer;
 }
 
+/* Completed step */
+.roadmap-step .completed {
+    text-decoration: line-through;
+    color: #888;
+    font-style: italic;
+}
+
+/* Button inside roadmap box, fixed at the bottom */
 .btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #033452;
+    width: 100%;
+    padding: 12px;
+    background: #033452;
     color: white;
+    border-radius: 8px;
+    font-weight: bold;
     text-decoration: none;
-    border-radius: 5px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background: #02253a;
+    transform: scale(1.02);
 }

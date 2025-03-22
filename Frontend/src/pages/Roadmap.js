@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const Roadmap = () => {
     const [role, setRole] = useState("Frontend Developer");
+    const [completedSteps, setCompletedSteps] = useState({}); // Store completed steps
 
     const roadmaps = {
         "Frontend Developer": [
@@ -32,6 +33,17 @@ const Roadmap = () => {
         ],
     };
 
+    // Handle checkbox toggle
+    const handleCheckboxChange = (stepIndex) => {
+        setCompletedSteps((prev) => ({
+            ...prev,
+            [role]: {
+                ...prev[role],
+                [stepIndex]: !prev[role]?.[stepIndex]
+            },
+        }));
+    };
+
     return (
         <div className="roadmap-container">
             <h1>Personalized Roadmap</h1>
@@ -46,7 +58,14 @@ const Roadmap = () => {
             <div className="roadmap">
                 {roadmaps[role].map((step, index) => (
                     <div key={index} className="roadmap-step">
-                        <span>{index + 1}.</span> {step}
+                        <input
+                            type="checkbox"
+                            checked={completedSteps[role]?.[index] || false}
+                            onChange={() => handleCheckboxChange(index)}
+                        />
+                        <span className={completedSteps[role]?.[index] ? "completed" : ""}>
+                            {index + 1}. {step}
+                        </span>
                     </div>
                 ))}
             </div>
