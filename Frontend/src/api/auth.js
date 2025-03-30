@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL = "http://localhost:5000/api/auth"; // Ensure '/api/auth' is included
-
+const ADMIN_API_URL="http://localhost:5000/api/admin";// admin url for routes 
 // Signup Function
 export const signup = async (userData) => {
     try {
