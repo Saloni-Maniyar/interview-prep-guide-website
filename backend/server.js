@@ -6,8 +6,8 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/auth');
-// require('dotenv').config();
 
+const adminRoutes=require('./routes/adminRoutes');
 const app = express();
 
 // Middleware
@@ -27,7 +27,8 @@ app.get('/', (req, res) => {
     res.send('Backend is working!');
 });
 
-
+//use admin routes
+app.use('/api/admin',adminRoutes);
 
 // Listen on port
 const PORT = process.env.PORT || 5000;
