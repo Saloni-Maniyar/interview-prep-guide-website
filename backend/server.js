@@ -7,16 +7,27 @@ const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/auth');
 
-const adminRoutes=require('./routes/adminRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const app = express();
+
 
 // Middleware
 app.use(cors({
     origin: 'http://localhost:3000', // Update with your frontend URL
-    credentials: true  // Allow cookies to be sent from the frontend
+    credentials: true // Allow cookies to be sent from the frontend
 }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(cookieParser()); //to parse cookies;
+
+app.use((req, res, next) => {
+    console.log("Cookies received:", JSON.stringify(req.cookies, null, 2));
+    next();
+});
+
+
+//app.use(cookieParser()); //to parse cookies;
 // Connect to database
 connectDB();
 
@@ -28,7 +39,7 @@ app.get('/', (req, res) => {
 });
 
 //use admin routes
-app.use('/api/admin',adminRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Listen on port
 const PORT = process.env.PORT || 5000;
