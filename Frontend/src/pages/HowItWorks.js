@@ -1,3 +1,5 @@
+//npm install fa
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserPlus, FaMap, FaCode, FaClipboardCheck, FaChartLine } from "react-icons/fa";

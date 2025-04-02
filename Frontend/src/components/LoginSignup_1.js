@@ -1,4 +1,105 @@
+// // import axios from 'axios';
+// // import { useNavigate } from 'react-router-dom';
+// import React, { useState } from 'react';
+// import "../styles/LoginSignup.css";
+// import { signup, login } from '../api/auth'; // Import API functions
 
+// export default function AuthForm() {
+//     const [isLogin, setIsLogin] = useState(true);
+//     const [formData, setFormData] = useState({
+//         name: '',
+//         email: '',
+//         password: '',
+
+//     });
+//     const [message, setMessage] = useState('');  // Pop-up message state
+//     const [showPopup, setShowPopup] = useState(false);  // Pop-up visibility
+
+//     // Handle form input changes
+//     const handleChange = (e) => {
+//         setFormData({ ...formData, [e.target.name]: e.target.value });
+//     };
+
+//     // Handle login/signup
+//     const handleSubmit = async (e) => {
+//         e.preventDefault();
+//         try {
+//             let response;
+//             if (isLogin) {
+//                 response = await login({ email: formData.email, password: formData.password });
+//                 setMessage("Login Successful! Welcome back.");
+//             } else {
+//                 response = await signup(formData);
+//                 setMessage("Signup Successful! You can now log in.");
+//             }
+//             console.log(response);
+
+//             setShowPopup(true);  // Show pop-up message
+
+//             // Auto-close popup after 3 seconds
+//             setTimeout(() => {
+//                 setShowPopup(false);
+//             }, 3000);
+
+//         } catch (error) {
+//             console.error("Error:", error.message);
+//             setMessage("Something went wrong. Please try again.");
+//             setShowPopup(true);
+
+//             // Auto-close popup after 3 seconds
+//             setTimeout(() => {
+//                 setShowPopup(false);
+//             }, 3000);
+//         }
+//     };
+
+//     return (
+//         <div className='container'>
+//             <div className='form-container'>
+//                 {/* Toggle Login/Signup */}
+//                 <div className='form-toggle'>
+//                     <button className={isLogin ? 'active' : ''} onClick={() => setIsLogin(true)}>Login</button>
+//                     <button className={!isLogin ? 'active' : ''} onClick={() => setIsLogin(false)}>Sign Up</button>
+//                 </div>
+
+//                 {/* Form */}
+//                 <form className='form' onSubmit={handleSubmit}>
+//                     <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
+
+//                     {!isLogin && (
+//                         <>
+//                             <input type='text' name='name' placeholder='Full Name' value={formData.name} onChange={handleChange} required />
+//                         </>
+//                     )}
+
+//                     <input type='email' name='email' placeholder='Email' value={formData.email} onChange={handleChange} required />
+//                     <input type='password' name='password' placeholder='Password' value={formData.password} onChange={handleChange} required />
+
+//                     <button type='submit'>{isLogin ? 'Login' : 'Sign Up'}</button>
+
+//                     {isLogin ? (
+//                         <p>Don't have an account? <button type="button" onClick={() => setIsLogin(false)}>Sign Up</button></p>
+//                     ) : (
+//                         <p>Already have an account? <button type="button" onClick={() => setIsLogin(true)}>Login</button></p>
+//                     )}
+//                 </form>
+//             </div>
+
+//             {/* Pop-up Message */}
+//             {showPopup && (
+//                 <div className="popup">
+//                     <p>{message}</p>
+//                 </div>
+//             )}
+//         </div>
+//     );
+// }
+
+
+
+
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import "../styles/LoginSignup.css";
 import { signup, login } from '../api/auth'; // Import API functions
@@ -93,3 +194,7 @@ export default function AuthForm() {
         </div>
     );
 }
+
+
+
+

@@ -6,8 +6,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import LandingPagenavbar from "./components/LandingPagenavbar";
-
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import Roadmap from "./pages/Roadmap";
 import Practice from "./pages/Practice";
 import Progress from "./pages/Progress";
@@ -23,7 +22,10 @@ import ContactUs from "./pages/ContactUs";
 import FAQs from "./pages/FAQs";
 import BlogList from "./pages/BlogList";
 import BlogDetail from "./pages/BlogDetail";
-
+import AdminDashboard from "./pages/AdminDashboard";
+//import AdminLogin from "./pages/AdminLogin";
+//import AdminLogin from "./pages/adminLogin";
+import AdminLogin from "./pages/adminLogin";
 
 // Layout component to manage navbar logic
 const Layout = ({ children }) => {
@@ -43,7 +45,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout><LandingPage /></Layout>} />
-        <Route path="/home" element={<Layout><Home /></Layout>} />
+        <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
         <Route path="/roadmap" element={<Layout><Roadmap /></Layout>} />
         <Route path="/practice" element={<Layout><Practice /></Layout>} />
         <Route path="/progress" element={<Layout><Progress /></Layout>} />
@@ -58,6 +60,8 @@ function App() {
         <Route path="/fAQs" element={<FAQs />} />
         <Route path="/blog" element={<BlogList />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
       </Routes>
     </Router>
   );

@@ -1,6 +1,5 @@
 
 
-
 //npm install recharts 
 import React from "react";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";

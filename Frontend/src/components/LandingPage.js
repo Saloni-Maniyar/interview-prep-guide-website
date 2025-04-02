@@ -4,8 +4,12 @@ import React from "react";
 import "../styles/LandingPage.css";
 import { useNavigate } from "react-router-dom";
 
+
+
 const LandingPage = () => {
     const navigate = useNavigate();
+
+
 
     return (
         <div className="landing-page">

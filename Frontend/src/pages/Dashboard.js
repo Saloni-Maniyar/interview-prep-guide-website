@@ -1,6 +1,6 @@
 import React from "react";
 
-const Home = () => {
+const ddashboard = () => {
     return (
         <div style={{ padding: "20px", textAlign: "center" }}>
             <h1>Welcome to the Interview Preparation Guide</h1>
@@ -9,4 +9,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default ddashboard;
