@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { authenticateUser } = require('../middleware/authMiddleware');
 
-// Secret key for JWT (Store this in .env file later)
 const JWT_SECRET =  process.env.JWT_SECRET;
 
 // Signup Route (User Registration)
@@ -57,7 +56,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Generate JWT Token
-        const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({_id:user._id}, JWT_SECRET, { expiresIn: '1d' });
         
         // Send token as HttpOnly Cookie
         res.cookie('token', token, { 

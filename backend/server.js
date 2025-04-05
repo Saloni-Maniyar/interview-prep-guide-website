@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 
 const adminRoutes = require('./routes/adminRoutes');
+const userRoutes=require('./routes/userRoutes');
 const app = express();
 
 
@@ -31,13 +32,16 @@ app.use((req, res, next) => {
 // Connect to database
 connectDB();
 
-//use auth route 
+//use auth  routes of user 
 app.use('/api/auth', authRoutes);
+
+//use all other routes of user 
+app.use('/api/user',userRoutes);
 // Test Route
 app.get('/', (req, res) => {
     res.send('Backend is working!');
 });
-
+ 
 //use admin routes
 app.use('/api/admin', adminRoutes);
 
