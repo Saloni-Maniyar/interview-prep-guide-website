@@ -4,17 +4,18 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
+const quizRoutes = require("./routes/quiz");
 
 const authRoutes = require('./routes/auth');
 
 const adminRoutes = require('./routes/adminRoutes');
-const userRoutes=require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:3000', // Update with your frontend URL
+    origin: 'http://localhost:3000',
     credentials: true // Allow cookies to be sent from the frontend
 }));
 app.use(express.json());
@@ -28,7 +29,6 @@ app.use((req, res, next) => {
 });
 
 
-//app.use(cookieParser()); //to parse cookies;
 // Connect to database
 connectDB();
 
@@ -36,12 +36,16 @@ connectDB();
 app.use('/api/auth', authRoutes);
 
 //use all other routes of user 
-app.use('/api/user',userRoutes);
+app.use('/api/user', userRoutes);
 // Test Route
 app.get('/', (req, res) => {
     res.send('Backend is working!');
 });
- 
+
+
+
+app.use("/api/quiz", quizRoutes);
+
 //use admin routes
 app.use('/api/admin', adminRoutes);
 

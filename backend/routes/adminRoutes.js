@@ -7,8 +7,8 @@ const crypto = require('crypto');
 const transporter = require('../config/nodemailer');
 
 const { authenticateAdmin } = require('../middleware/adminMiddleware');
-//Admin login route
 
+//Admin login route
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -107,9 +107,6 @@ router.post("/reset-password", async (req, res) => {
 //     res.send('You are authenticated and can access this route!');
 // });
 
-// router.get("/dashboard", authenticateAdmin, (req, res) => {
-//     res.json({ message: "Welcome Admin!", admin: req.admin });
-// });
 
 router.get("/dashboard", authenticateAdmin, (req, res) => {
     console.log("Cookies received in /dashboard:", req.cookies);  // 🛠 Debugging

@@ -4,9 +4,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../styles/LandingNavbar.css"; // Import CSS
+import "../styles/AuthModal.css";
 
 
-const LandingNavbar = () => {
+const LandingNavbar = ({ setShowModal }) => {
     const location = useLocation(); // Get current page URL
 
     return (
@@ -21,11 +22,10 @@ const LandingNavbar = () => {
                 <Link to="/blog" className="nav-link">Blog</Link>
                 <Link to="/ContactUs" className="nav-link">ContactUs</Link>
                 <Link to="/FAQs" className="nav-link">FAQs</Link>
-                <Link to="/login" className="login-btn">Login</Link>
+                {/* <Link to="/login" className="login-btn">Login</Link> */}
+                <button className="login-btn" onClick={() => setShowModal(true)}>Login</button>
 
 
-
-                {/* <Link to="/signup">Sign Up</Link> */}
             </div>
         </nav>
     );

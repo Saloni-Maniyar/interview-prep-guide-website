@@ -3,7 +3,8 @@ require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const authenticateUser = (req, res, next) => {
-    let token = req.cookies.token; 
+
+    let token = req.cookies.token;
 
     console.log("Cookies:", req.cookies);  //Debug: Check if cookies are present
     console.log("Authorization Header:", req.headers.authorization);  // Debug: Check if Authorization header is sent
@@ -17,6 +18,7 @@ const authenticateUser = (req, res, next) => {
     }
 
     console.log("Extracted Token:", token);  //  Debug: Check the final token value
+
 
     if (!token) {
         console.log("No token found, sending 401 Unauthorized");
