@@ -61,7 +61,7 @@
 }
 
 /* Login Button */
-.login-btn {
+.logout-btn {
     background-color: #ff9800;
     /* Keeping original button color */
     padding: 8px 16px;
@@ -77,7 +77,7 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.login-btn:hover {
+.logout-btn:hover {
     background-color: #ffac33;
     transform: scale(1.1);
 }

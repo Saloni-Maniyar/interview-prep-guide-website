@@ -1,74 +1,173 @@
-import React, { useState } from "react";
-import "../styles/Roadmap.css"; // Add styles
+
+import React, { useEffect, useState } from "react";
+import "../styles/Roadmap.css";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Roadmap = () => {
-    const [role, setRole] = useState("Frontend Developer");
-    const [completedSteps, setCompletedSteps] = useState({}); // Store completed steps
+    const [roadmaps, setRoadmaps] = useState([]);
+    const [selectedRoadmapId, setSelectedRoadmapId] = useState("");
+    const [currentRoadmap, setCurrentRoadmap] = useState(null);
+    const [completedSteps, setCompletedSteps] = useState({});
 
-    const roadmaps = {
-        "Frontend Developer": [
-            "Learn HTML, CSS, and JavaScript",
-            "Master React.js or Angular",
-            "Understand State Management (Redux, Context API)",
-            "Work with APIs & Authentication",
-            "Practice Data Structures & Algorithms",
-            "Build Portfolio & Apply for Jobs",
-        ],
-        "Backend Developer": [
-            "Learn Node.js, Express.js, or Django",
-            "Understand Databases (SQL & NoSQL)",
-            "Master REST APIs & Authentication",
-            "Learn Caching, Queues, and Optimization",
-            "Practice System Design & DSA",
-            "Build Scalable Backend Systems",
-        ],
-        "Full Stack Developer": [
-            "Learn Frontend & Backend Technologies",
-            "Master Database Design & APIs",
-            "Work on Full-Stack Projects",
-            "Learn DevOps & Deployment",
-            "Practice Coding & System Design",
-            "Build Real-World Applications",
-        ],
+    // Fetch all roadmaps
+    useEffect(() => {
+        const fetchRoadmaps = async () => {
+            try {
+                const res = await axios.get("http://localhost:5000/api/user/roadmap");
+                console.log("Fetched Roadmaps:", res.data);
+                setRoadmaps(res.data);
+
+                // Set default roadmap
+                if (res.data.length > 0) {
+                    setSelectedRoadmapId(res.data[0]._id);
+                }
+            } catch (error) {
+                console.error("Error fetching roadmaps", error);
+            }
+        };
+
+        fetchRoadmaps();
+    }, []);
+
+    // Fetch selected roadmap details
+    useEffect(() => {
+        const fetchSingleRoadmap = async () => {
+            if (!selectedRoadmapId) return;
+            try {
+                const res = await axios.get(`http://localhost:5000/api/user/roadmap/${selectedRoadmapId}`);
+                setCurrentRoadmap(res.data);
+            } catch (error) {
+                console.error("Error fetching single roadmap", error);
+            }
+        };
+
+        fetchSingleRoadmap();
+    }, [selectedRoadmapId]);
+
+    // Fetch completed steps of user
+    useEffect(() => {
+        const fetchProgress = async () => {
+            try {
+                const res = await axios.get("http://localhost:5000/api/user/roadmap/progress", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                });
+
+                const steps = {};
+                res.data.forEach(item => {
+                    item.completedSteps.forEach(step => {
+                        steps[step] = true;
+                    });
+                });
+
+                setCompletedSteps(steps);
+
+            } catch (error) {
+                if (error.response && error.response.status === 400) {
+                    console.warn("User has not followed any roadmap yet.");
+                } else {
+                    console.error("Error fetching progress", error);
+                }
+            }
+
+        };
+
+        fetchProgress();
+    }, []);
+
+
+    const followRoadmap = async (roadmapId) => {
+        try {
+            const res = await axios.post(`http://localhost:5000/api/user/roadmap/follow/${roadmapId}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            console.log("Roadmap followed:", res.data);
+        } catch (error) {
+            console.error("Error following roadmap", error);
+        }
     };
 
-    // Handle checkbox toggle
-    const handleCheckboxChange = (stepIndex) => {
-        setCompletedSteps((prev) => ({
-            ...prev,
-            [role]: {
-                ...prev[role],
-                [stepIndex]: !prev[role]?.[stepIndex]
-            },
-        }));
+
+    // Checkbox change
+    const handleCheckboxChange = async (roadmapId, subStepText, checked) => {
+        try {
+            setCompletedSteps(prev => ({
+                ...prev,
+                [subStepText]: checked,
+            }));
+
+            await axios.patch("http://localhost:5000/api/user/roadmap/progress/update", {
+                roadmapId,
+                subStepText,
+                checked,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+        } catch (error) {
+            console.error("Failed to update progress:", error);
+        }
     };
 
     return (
         <div className="roadmap-container">
             <h1>Personalized Roadmap</h1>
 
-            <label>Select Your Role:</label>
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option value="Frontend Developer">Frontend Developer</option>
-                <option value="Backend Developer">Backend Developer</option>
-                <option value="Full Stack Developer">Full Stack Developer</option>
-            </select>
-
-            <div className="roadmap">
-                {roadmaps[role].map((step, index) => (
-                    <div key={index} className="roadmap-step">
-                        <input
-                            type="checkbox"
-                            checked={completedSteps[role]?.[index] || false}
-                            onChange={() => handleCheckboxChange(index)}
-                        />
-                        <span className={completedSteps[role]?.[index] ? "completed" : ""}>
-                            {index + 1}. {step}
-                        </span>
-                    </div>
-                ))}
+            <div className="dropdown-section">
+                <label htmlFor="role-select">Select Your Role:</label>
+                <select
+                    id="role-select"
+                    value={selectedRoadmapId}
+                    onChange={(e) => setSelectedRoadmapId(e.target.value)}
+                >
+                    <option value="" disabled>Select a Role</option>
+                    {roadmaps.map((rm) => (
+                        <option key={rm._id} value={rm._id}>
+                            {rm.role}
+                        </option>
+                    ))}
+                </select>
             </div>
+
+            {currentRoadmap && (
+                <div className="roadmap">
+                    <h2>{currentRoadmap.title}</h2>
+                    <p>{currentRoadmap.description}</p>
+
+                    {currentRoadmap.steps.map((step, index) => (
+                        <div key={index} className="roadmap-step">
+                            <strong>{step.title}</strong>
+                            <ul>
+                                {step.subSteps.map((sub, subIndex) => (
+                                    <li key={subIndex}>
+                                        <input
+                                            type="checkbox"
+                                            checked={!!completedSteps[sub.text]}
+                                            onChange={() =>
+                                                handleCheckboxChange(
+                                                    currentRoadmap._id,
+                                                    sub.text,
+                                                    !completedSteps[sub.text]
+                                                )
+                                            }
+                                        />
+                                        <span className={completedSteps[sub.text] ? "completed" : ""}>
+                                            {sub.text}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            )}
+            <button onClick={() => followRoadmap(selectedRoadmapId)}>Follow this Roadmap</button>
+
 
             <Link to="/Home" className="btn">Back to Home</Link>
         </div>
@@ -76,3 +175,4 @@ const Roadmap = () => {
 };
 
 export default Roadmap;
+

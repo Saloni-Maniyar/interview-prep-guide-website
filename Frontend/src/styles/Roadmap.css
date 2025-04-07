@@ -1,5 +1,5 @@
 /* Roadmap container with proper centering */
-.roadmap-container {
+/* .roadmap-container {
     max-width: 600px;
     height: 75vh;
     margin: auto;
@@ -12,39 +12,39 @@
     flex-direction: column;
     justify-content: space-between;
     padding-top: 20%;
-}
+} */
 
 /* Heading */
-.roadmap-container h1 {
+/* .roadmap-container h1 {
     color: #033452;
     font-size: 22px;
     margin-bottom: 15px;
-}
+} */
 
 /* Role selector */
-.roadmap-container label {
+/* .roadmap-container label {
     font-weight: bold;
     display: block;
     margin-bottom: 10px;
-}
+} */
 
-.roadmap-container select {
+/* .roadmap-container select {
     padding: 10px;
     font-size: 16px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
-}
+} */
 
 /* Steps section with internal scrolling */
-.roadmap {
+/* .roadmap {
     flex-grow: 1;
     overflow-y: auto;
     padding-right: 5px;
-}
+} */
 
 /* Individual steps with checkbox */
-.roadmap-step {
+/* .roadmap-step {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -54,24 +54,24 @@
     border-radius: 5px;
     text-align: left;
     padding-left: 12px;
-}
+} */
 
 /* Checkbox styling */
-.roadmap-step input[type="checkbox"] {
+/* .roadmap-step input[type="checkbox"] {
     margin-right: 10px;
     transform: scale(1.2);
     cursor: pointer;
-}
+} */
 
 /* Completed step */
-.roadmap-step .completed {
+/* .roadmap-step .completed {
     text-decoration: line-through;
     color: #888;
     font-style: italic;
-}
+} */
 
 /* Button inside roadmap box, fixed at the bottom */
-.btn {
+/* .btn {
     width: 100%;
     padding: 12px;
     background: #033452;
@@ -81,9 +81,54 @@
     text-decoration: none;
     text-align: center;
     transition: all 0.3s ease-in-out;
-}
-
+} */
+/* 
 .btn:hover {
     background: #02253a;
     transform: scale(1.02);
+} */
+
+
+
+.roadmap-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.roadmap {
+    margin-top: 20px;
+}
+
+.roadmap-step {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: green;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.dropdown-section {
+    margin: 20px 0;
+}
+
+.dropdown-section select {
+    padding: 8px;
+    font-size: 16px;
+    margin-left: 10px;
+    border-radius: 5px;
 }
