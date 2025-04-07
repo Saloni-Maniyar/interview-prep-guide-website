@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const User = require('../models/User');
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const authenticateUser = (req, res, next) => {
+const authenticateUser = async (req, res, next) => {
 
     let token = req.cookies.token;
 
@@ -28,7 +29,16 @@ const authenticateUser = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         console.log(" Token Verified Successfully:decoded token", decoded); //  Debug: Check decoded token
-        req.user = decoded;  // Attach user info to request object
+        // req.user = decoded;  // Attach user info to request object
+
+        // ✅ Fetch full user from DB
+        const user = await User.findById(decoded.userId).select("-password");
+
+        if (!user) {
+            return res.status(401).json({ message: "User not found" });
+        }
+
+        req.user = user; // ✅ Attach full user object to request
         next();
     } catch (error) {
         console.log("Invalid or Expired Token:", error.message); // Debug: Check token error

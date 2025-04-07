@@ -42,6 +42,8 @@ app.get('/', (req, res) => {
     res.send('Backend is working!');
 });
 
+const roadmapRoutes = require('./routes/userRoutes');
+app.use('/api/userRoutes', roadmapRoutes);
 
 
 app.use("/api/quiz", quizRoutes);
