@@ -7,7 +7,7 @@ const connectDB = require('./config/db');
 const quizRoutes = require("./routes/quiz");
 
 const authRoutes = require('./routes/auth');
-
+const aptiRoutes=require('./routes/aptitudeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 const app = express();
@@ -47,6 +47,9 @@ app.use('/api/userRoutes', roadmapRoutes);
 
 
 app.use("/api/quiz", quizRoutes);
+
+//use aptitude module routes
+app.use("/api/aptitude",aptiRoutes);
 
 //use admin routes
 app.use('/api/admin', adminRoutes);

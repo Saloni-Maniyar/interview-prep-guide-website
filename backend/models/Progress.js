@@ -24,7 +24,11 @@ const progressSchema = new mongoose.Schema({
       round: { type: String },
       performance: { type: String }
     }
-  ]
+  ],
+  aptitudeQuestionsPracticed: { type: Number, default: 0 },
+  aptitudeQuestionsEasy: { type: Number, default: 0 },       // Easy questions
+  aptitudeQuestionsMedium: { type: Number, default: 0 },     // Medium questions
+  aptitudeQuestionsHard: { type: Number, default: 0 },       //Hard questions
 });
 
 module.exports = mongoose.model('Progress', progressSchema);

@@ -68,7 +68,7 @@ const express = require("express");
 const router = express.Router();
 const Question = require("../models/Questions");
 const QuizAttempt = require("../models/QuizAttempt");
-const User = require("../models/User"); // ✅ Import User model
+const User = require("../models/User"); //  Import User model
 
 // API to get quiz questions
 router.get("/get-quiz", async (req, res) => {
