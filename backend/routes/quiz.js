@@ -1,155 +1,70 @@
-// const express = require("express");
-// const router = express.Router();
-// const Question = require("../models/Questions");
-// const QuizAttempt = require("../models/QuizAttempt");
-
-// //const userId = localStorage.getItem("userId");
-
-// // API to get quiz questions
-// router.get("/get-quiz", async (req, res) => {
-//     try {
-//         const { topic, difficulty, limit } = req.query; // Get filters from query params
-//         let query = {};
-
-//         if (topic) query.topic = topic; // Filter by topic
-//         if (difficulty) query.difficulty = difficulty; // Filter by difficulty
-
-//         // Fetch random questions from MongoDB
-//         const questions = await Question.aggregate([
-//             { $match: query },
-//             { $sample: { size: parseInt(limit) || 5 } } // Default: 5 random questions
-//         ]);
-
-//         res.json(questions);
-//     } catch (error) {
-//         res.status(500).json({ message: "Server Error", error });
-//     }
-// });
-
-
-// // Save user quiz attempt
-// router.post("/save-quiz", async (req, res) => {
-//     try {
-//         const { userId, quizType, selectedOption, questions, score } = req.body;
-//         console.log("QUIZ SUBMISSION DATA:", req.body);
-//         if (!userId) {
-//             return res.status(400).json({ message: "User ID missing!" });
-//         }
-//         const quizAttempt = new QuizAttempt({ userId, quizType, selectedOption, questions, score });
-//         await quizAttempt.save();
-//         res.status(201).json({ message: "Quiz attempt saved!", quizAttempt });
-//     } catch (error) {
-//         res.status(500).json({ message: "Error saving quiz", error });
-//     }
-// });
-
-
-// //to fetch th past history of attempted quizzes.
-// router.get("/user-quiz-progress/:userId", async (req, res) => {
-//     try {
-//         const { userId } = req.params;
-//         const attempts = await QuizAttempt.find({ userId }).sort({ createdAt: -1 });
-//         res.json(attempts);
-//     } catch (error) {
-//         res.status(500).json({ message: "Error fetching quiz progress", error });
-//     }
-// });
-
-
-// module.exports = router;
-
-
-
-
-
-
-
 const express = require("express");
 const router = express.Router();
 const Question = require("../models/Questions");
 const QuizAttempt = require("../models/QuizAttempt");
-const User = require("../models/User"); //  Import User model
+const { authenticateUser } = require("../middleware/authMiddleware");
 
-// API to get quiz questions
-router.get("/get-quiz", async (req, res) => {
+// Route to get distinct topics from the Question collection
+router.get('/distinct-topics', async (req, res) => {
     try {
-        const { topic, difficulty, limit } = req.query;
-        let query = {};
+        // Fetch distinct topics from the Question collection
+        const topics = await Question.distinct('topic');
+        res.status(200).json(topics); // Send the topics as a response
+    } catch (error) {
+        console.error("Error fetching topics:", error);
+        res.status(500).json({ message: "Error fetching topics" });
+    }
+});
 
-        if (topic) query.topic = topic;
-        if (difficulty) query.difficulty = difficulty;
+
+//  Fetch 10 Quiz Questions Based on Topic
+
+router.get("/get-quiz", authenticateUser, async (req, res) => {
+    try {
+        const { topic } = req.query;
+        if (!topic) {
+            return res.status(400).json({ message: "Topic is required!" });
+        }
 
         const questions = await Question.aggregate([
-            { $match: query },
-            { $sample: { size: parseInt(limit) || 5 } }
+            { $match: { topic } },
+            { $sample: { size: 10 } }
         ]);
 
         res.json(questions);
     } catch (error) {
+        console.error("Error fetching quiz questions:", error);
         res.status(500).json({ message: "Server Error", error });
     }
 });
 
-
-
-
-
-router.post("/save-quiz", async (req, res) => {
+// Submit Quiz Attempt
+// ========================
+/**
+ * @route   POST /api/quiz/save-quiz
+ * @desc    Save user's quiz attempt, calculate score, store all question data
+ * @body    {
+ *   userId,
+ *   selectedOption,
+ *   timeTaken,
+ *   questions: [
+ *     {
+ *       questionId,
+ *       questionText,
+ *       options,
+ *       correctAnswer,
+ *       explanation,
+ *       selectedAnswer
+ *     }
+ *   ]
+ * }
+ */
+router.post("/save-quiz", authenticateUser, async (req, res) => {
     try {
-        const { userId, quizType, selectedOption, questions } = req.body;
+        const { userId, selectedOption, timeTaken, questions } = req.body;
 
-        if (!userId) return res.status(400).json({ message: "User ID missing!" });
-
-        let score = 0;
-
-        // ✅ Evaluate questions properly
-        const evaluatedQuestions = questions.map((q) => {
-            const isCorrect = q.selectedAnswer?.trim().toLowerCase() === q.correctAnswer?.trim().toLowerCase();
-            if (isCorrect) score++;
-            return {
-                questionId: q.questionId,
-                selectedAnswer: q.selectedAnswer,
-                isCorrect
-            };
-        });
-
-        const quizAttempt = new QuizAttempt({
-            userId,
-            quizType,
-            selectedOption,
-            questions: evaluatedQuestions,
-            score
-        });
-
-        await quizAttempt.save();
-
-        await User.findByIdAndUpdate(userId, {
-            $push: {
-                quizProgress: {
-                    quizType,
-                    selectedOption,
-                    score,
-                    total: evaluatedQuestions.length,
-                    date: new Date()
-                }
-            }
-        });
-
-        res.status(201).json({ message: "Quiz attempt saved!", score, quizAttempt });
-    } catch (error) {
-        console.log("Error saving quiz:", error);
-        res.status(500).json({ message: "Server Error", error });
-    }
-});
-
-
-
-router.post("/save-quiz", async (req, res) => {
-    try {
-        const { userId, quizType, selectedOption, questions } = req.body;
-
-        if (!userId || !questions) {
-            return res.status(400).json({ message: "Missing required data!" });
+        if (!userId || !selectedOption || !questions || !timeTaken) {
+            return res.status(400).json({ message: "Missing required fields!" });
         }
 
         let score = 0;
@@ -159,6 +74,10 @@ router.post("/save-quiz", async (req, res) => {
 
             return {
                 questionId: q.questionId,
+                questionText: q.questionText,
+                options: q.options,
+                correctAnswer: q.correctAnswer,
+                explanation: q.explanation,
                 selectedAnswer: q.selectedAnswer,
                 isCorrect
             };
@@ -166,46 +85,68 @@ router.post("/save-quiz", async (req, res) => {
 
         const quizAttempt = new QuizAttempt({
             userId,
-            quizType,
+            quizType: "topic",
             selectedOption,
+            timeTaken,
             questions: formattedQuestions,
             score
         });
 
         await quizAttempt.save();
 
-        const total = formattedQuestions.length;
-
-        await User.findByIdAndUpdate(userId, {
-            $push: {
-                quizProgress: {
-                    quizType,
-                    selectedOption,
-                    score,
-                    total,
-                    date: new Date()
-                }
-            }
+        res.status(201).json({
+            message: "Quiz saved successfully!",
+            score,
+            timeTaken,
+            quizAttempt
         });
-
-        res.status(201).json({ message: "Quiz attempt saved & progress updated!", score, quizAttempt });
-
     } catch (error) {
-        console.error("Quiz Save Error:", error);
+        console.error("Error saving quiz attempt:", error);
         res.status(500).json({ message: "Error saving quiz", error });
     }
 });
 
-
-
-// Fetch quiz progress for a user
-router.get("/user-quiz-progress/:userId", async (req, res) => {
+// ========================
+// 3. Get Quiz History for a User
+// ========================
+/**
+ * @route   GET /api/quiz/user-quiz-progress/:userId
+ * @desc    Get all quiz attempts of a user (latest first)
+ */
+router.get("/user-quiz-progress/:userId", authenticateUser, async (req, res) => {
     try {
         const { userId } = req.params;
-        const attempts = await QuizAttempt.find({ userId }).sort({ createdAt: -1 });
+        const attempts = await QuizAttempt.find({ userId })
+            .select("selectedOption score timeTaken createdAt")
+            .sort({ createdAt: -1 });
+
         res.json(attempts);
     } catch (error) {
+        console.error("Error fetching user quiz progress:", error);
         res.status(500).json({ message: "Error fetching quiz progress", error });
+    }
+});
+
+// ========================
+// 4. Review Specific Quiz Attempt by ID
+// ========================
+/**
+ * @route   GET /api/quiz/review-quiz/:attemptId
+ * @desc    Get full quiz attempt with all questions, selected answers, explanations
+ */
+router.get("/review-quiz/:attemptId", authenticateUser, async (req, res) => {
+    try {
+        const { attemptId } = req.params;
+
+        const attempt = await QuizAttempt.findById(attemptId);
+        if (!attempt) {
+            return res.status(404).json({ message: "Quiz attempt not found" });
+        }
+
+        res.json(attempt);
+    } catch (error) {
+        console.error("Error fetching quiz attempt:", error);
+        res.status(500).json({ message: "Error fetching quiz attempt", error });
     }
 });
 
