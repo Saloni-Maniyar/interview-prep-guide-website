@@ -10,6 +10,7 @@ const authRoutes = require('./routes/auth');
 const aptiRoutes=require('./routes/aptitudeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
+const interviewRoutes=require('./routes/interviewRoutes');
 const app = express();
 
 
@@ -37,6 +38,8 @@ app.use('/api/auth', authRoutes);
 
 //use all other routes of user 
 app.use('/api/user', userRoutes);
+//interview routes 
+app.use('/api/interview',interviewRoutes);
 // Test Route
 app.get('/', (req, res) => {
     res.send('Backend is working!');
