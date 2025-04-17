@@ -29,6 +29,20 @@ const progressSchema = new mongoose.Schema({
   aptitudeQuestionsEasy: { type: Number, default: 0 },       // Easy questions
   aptitudeQuestionsMedium: { type: Number, default: 0 },     // Medium questions
   aptitudeQuestionsHard: { type: Number, default: 0 },       //Hard questions
+
+  mockInterview: {
+    totalInterviews: { type: Number, default: 0 },
+    lastInterviewDate: { type: Date, default: null },
+    averageScore: { type: Number, default: 0 },
+    feedbackSummary: [
+      {
+        date: { type: Date, default: Date.now },
+        techScore: { type: Number, default: 0 },
+        hrScore: { type: Number, default: 0 },
+        overallFeedback: { type: String, default: '' }
+      }
+    ]
+  }
 });
 
 module.exports = mongoose.model('Progress', progressSchema);

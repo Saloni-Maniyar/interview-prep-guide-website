@@ -25,4 +25,5 @@ const roadmapSchema = new mongoose.Schema({
     resources: [{ type: String }],
 });
 
-module.exports = mongoose.model("Roadmap", roadmapSchema);
+// module.exports = mongoose.model("Roadmap", roadmapSchema, "roadmaps");
+module.exports = mongoose.models.Roadmap || mongoose.model("Roadmap", roadmapSchema, "roadmaps");

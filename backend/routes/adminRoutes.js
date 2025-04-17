@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const transporter = require('../config/nodemailer');
+const User = require('../models/User');
+const QuizAttempt = require('../models/QuizAttempt');
+const Roadmap = require('../models/Roadmap');
+// const MockInterviewProgress = require('../models/MockInterviewProgress');
 
 const { authenticateAdmin } = require('../middleware/adminMiddleware');
 
@@ -116,9 +120,64 @@ router.get("/dashboard", authenticateAdmin, (req, res) => {
     res.json({ message: "Welcome Admin!", adminId: req.adminId });
 });
 
+// ✅ GET all users
+router.get('/users', authenticateAdmin, async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch users', error });
+    }
+});
 
-// router.get("/", (req, res) => {
-//     res.send("Admin route is working!");
-// });
+// ✅ BLOCK/UNBLOCK a user
+router.patch('/user/:id/block', authenticateAdmin, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.isBlocked = !user.isBlocked;
+        await user.save();
+
+        res.json({ message: `User ${user.isBlocked ? 'blocked' : 'unblocked'} successfully.` });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update user status', error });
+    }
+});
+
+// ✅ DELETE a user
+router.delete('/user/:id', authenticateAdmin, async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        if (!deletedUser) return res.status(404).json({ message: "User not found" });
+
+        res.json({ message: "User deleted successfully." });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to delete user', error });
+    }
+});
+
+router.get('/stats', authenticateAdmin, async (req, res) => {
+    try {
+        const totalUsers = await User.countDocuments();
+        const totalQuizzes = await QuizAttempt.countDocuments();  // use your actual quiz progress model name
+        const totalRoadmaps = await Roadmap.countDocuments();
+        const totalMockInterviews = await MockInterviewProgress.countDocuments(); // if you have this
+
+        res.json({
+            totalUsers,
+            totalQuizzes,
+            totalRoadmaps,
+            totalMockInterviews
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+});
+
+
+
 
 module.exports = router;
+
+

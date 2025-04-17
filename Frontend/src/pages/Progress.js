@@ -1,154 +1,10 @@
 
 
 
-// import React, { useState, useEffect, useCallback } from "react";
-// import axios from "axios";
-// import "../styles/ProgressTracking.css";
-// import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-
-// const ProgressTracking = () => {
-//     const [selectedSection, setSelectedSection] = useState(null);
-//     const [quizAttempts, setQuizAttempts] = useState([]);
-//     const [roadmapProgress, setRoadmapProgress] = useState([]);
-
-//     const [showModal, setShowModal] = useState(false);
-//     const [overallStats, setOverallStats] = useState({
-//         Quiz: 0,
-//         Aptitude: 0,
-//         "Mock Interview": 45,
-//         Roadmap: 60
-//     });
-
-//     const userId = localStorage.getItem("userId");
-
-
-
-//     useEffect(() => {
-//         document.body.style.overflow = showModal ? "hidden" : "auto";
-//     }, [showModal]);
-
-//     const sectionIcons = {
-//         Quiz: "🧠",
-//         "Mock Interview": "💬",
-//         Aptitude: "📊",
-//         Roadmap: "🛣️"
-//     };
-
-//     const fetchQuizAttempts = useCallback(async () => {
-//         try {
-//             const res = await axios.get(`http://localhost:5000/api/quiz/user-quiz-progress/${userId}`);
-//             setQuizAttempts(res.data);
-
-//             // ✅ Calculate average quiz score percentage
-//             if (res.data.length > 0) {
-//                 const totalScore = res.data.reduce((acc, curr) => acc + curr.score, 0);
-//                 const totalPossible = res.data.reduce((acc, curr) => acc + curr.questions.length, 0);
-//                 const quizPercentage = Math.round((totalScore / totalPossible) * 100);
-
-//                 setOverallStats(prev => ({
-//                     ...prev,
-//                     Quiz: quizPercentage
-//                 }));
-//             }
-//         } catch (error) {
-//             console.error("Error fetching quiz attempts", error);
-//         }
-//     }, [userId]);
-
-//     useEffect(() => {
-//         fetchQuizAttempts();
-//     }, [fetchQuizAttempts]);
-
-
-
-//     const handleSectionClick = (section) => {
-//         setSelectedSection(section);
-//         setShowModal(true);
-
-//         if (section === "Quiz" || section === "Aptitude") {
-//             fetchQuizAttempts();
-//         }
-//     };
-
-//     return (
-//         <div className="progress-container">
-//             <h1>📈 My Progress Dashboard</h1>
-
-//             <div className="card-section">
-//                 {Object.entries(overallStats).map(([section, percentage]) => (
-//                     <div className="progress-card" key={section} onClick={() => handleSectionClick(section)}>
-//                         <h3>{sectionIcons[section]} {section}</h3>
-//                         <div className="bar">
-//                             <div className="fill" style={{ width: `${percentage}%` }}></div>
-//                         </div>
-//                         <p>{percentage}% Completed</p>
-//                     </div>
-//                 ))}
-//             </div>
-
-//             {/* 🔍 Quiz / Aptitude Modal */}
-//             {showModal && (selectedSection === "Quiz" || selectedSection === "Aptitude") && (
-//                 <div className="modal-overlay">
-//                     <div className="modal-content">
-//                         <span className="close-btn" onClick={() => setShowModal(false)}>&times;</span>
-//                         <h2>{selectedSection} Attempts</h2>
-//                         {quizAttempts.length === 0 ? (
-//                             <p>No attempts yet!</p>
-//                         ) : (
-//                             quizAttempts.map((attempt, index) => (
-//                                 <div className="attempt-box" key={index}>
-//                                     <p><strong>Topic:</strong> {attempt.selectedOption}</p>
-//                                     <p><strong>Date:</strong> {new Date(attempt.createdAt).toLocaleDateString()}</p>
-//                                     <div className="bar-container">
-//                                         <div
-//                                             className="bar-fill"
-//                                             style={{
-//                                                 width: `${(attempt.score / attempt.questions.length) * 100}%`
-//                                             }}
-//                                         >
-//                                             {attempt.score}/{attempt.questions.length}
-//                                         </div>
-//                                     </div>
-//                                 </div>
-//                             ))
-//                         )}
-//                     </div>
-//                 </div>
-//             )}
-
-//             {/* ✅ Weekly Summary + Motivation */}
-//             <div className="weekly-summary">
-//                 <h3>🌟 Weekly Motivation</h3>
-//                 <p>“Success is the sum of small efforts, repeated day in and day out.”</p>
-//                 <h4>🎯 Achievements:</h4>
-//                 <ul>
-//                     <li>✅ First Quiz Completed</li>
-//                     <li>✅ 50% Roadmap Finished</li>
-//                 </ul>
-//             </div>
-
-//             {/* 📊 Combined Growth Chart */}
-//             <div className="growth-chart">
-//                 <h2>📊 Overall Growth</h2>
-//                 <ResponsiveContainer width="100%" height={300}>
-//                     <BarChart data={Object.entries(overallStats).map(([name, value]) => ({ name, value }))}>
-//                         <XAxis dataKey="name" />
-//                         <YAxis />
-//                         <Tooltip />
-//                         <Bar dataKey="value" fill="#82ca9d" />
-//                     </BarChart>
-//                 </ResponsiveContainer>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default ProgressTracking;
-
-
-
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import "../styles/ProgressTracking.css";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
@@ -157,11 +13,19 @@ const ProgressTracking = () => {
     const [selectedSection, setSelectedSection] = useState(null);
     const [quizAttempts, setQuizAttempts] = useState([]);
     const [roadmapProgress, setRoadmapProgress] = useState([]);
+    const [aptitudeStats, setAptitudeStats] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    // const [selectedRoadmap, setSelectedRoadmap] = useState(null);
+    const navigate = useNavigate();
+
+    const handleReviewClick = (attemptId) => {
+        navigate(`/review-quiz/${attemptId}`);
+    };
+
     const [overallStats, setOverallStats] = useState({
         Quiz: 0,
         Aptitude: 0,
-        "Mock Interview": 45,
+        "Mock Interview": 0,
         Roadmap: 60
     });
 
@@ -181,59 +45,138 @@ const ProgressTracking = () => {
 
     const fetchQuizAttempts = useCallback(async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/quiz/user-quiz-progress/${userId}`);
-            setQuizAttempts(res.data);
+            // 1. Get full quiz attempts
+            const res = await axios.get(
+                `http://localhost:5000/api/quiz/user-attempts/${userId}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
 
-            if (res.data.length > 0) {
-                const totalScore = res.data.reduce((acc, curr) => acc + curr.score, 0);
-                const totalPossible = res.data.reduce((acc, curr) => acc + curr.questions.length, 0);
-                const quizPercentage = Math.round((totalScore / totalPossible) * 100);
+            const attempts = res.data.attempts || [];
+            setQuizAttempts(attempts);
 
-                setOverallStats(prev => ({
-                    ...prev,
-                    Quiz: quizPercentage
-                }));
-            }
+            // 2. Calculate overall quiz score percentage
+            const totalQuestionsAttempted = attempts.reduce((sum, attempt) => sum + attempt.questions.length, 0);
+            const totalScore = attempts.reduce((sum, attempt) => sum + attempt.score, 0);
+            // const formattedTime = `${Math.floor(attempt.timeTaken / 60)}m ${attempt.timeTaken % 60}s`;
+
+            const quizPercentage = totalQuestionsAttempted > 0
+                ? Math.round((totalScore / totalQuestionsAttempted) * 100)
+                : 0;
+
+            setOverallStats(prev => ({
+                ...prev,
+                Quiz: quizPercentage
+            }));
+
         } catch (error) {
             console.error("Error fetching quiz attempts", error);
         }
-    }, [userId]);
+    }, [userId, token]);
 
     const fetchRoadmapProgress = useCallback(async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/user/roadmap/progress/percentage", {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await axios.get(
+                `http://localhost:5000/api/roadmap/progress/${userId}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
 
-            setRoadmapProgress(res.data);
+            const roadmapData = res.data.data;
+            if (Array.isArray(roadmapData) && roadmapData.length > 0) {
+                setRoadmapProgress(roadmapData);
 
-            if (res.data.length > 0) {
                 const avgPercent = Math.round(
-                    res.data.reduce((acc, curr) => acc + curr.completionPercent, 0) / res.data.length
+                    roadmapData.reduce((acc, curr) => acc + (curr.completionPercent || 0), 0) / roadmapData.length
                 );
+
                 setOverallStats(prev => ({
                     ...prev,
                     Roadmap: avgPercent
+                }));
+            } else {
+                setRoadmapProgress([]);
+                setOverallStats(prev => ({
+                    ...prev,
+                    Roadmap: 0
                 }));
             }
         } catch (error) {
             console.error("Error fetching roadmap progress", error);
         }
+    }, [userId, token]);
+
+
+    const fetchAptitudeProgress = useCallback(async () => {
+        try {
+            const res = await axios.get(
+                "http://localhost:5000/api/aptitude/aptitude-progress",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const {
+                aptitudeQuestionsPracticed,
+                aptitudeQuestionsEasy,
+                aptitudeQuestionsMedium,
+                aptitudeQuestionsHard
+            } = res.data;
+
+
+
+            const TOTAL_EASY = 30;
+            const TOTAL_MEDIUM = 40;
+            const TOTAL_HARD = 30;
+
+            const totalExpected = TOTAL_EASY + TOTAL_MEDIUM + TOTAL_HARD;
+            const totalCompleted = aptitudeQuestionsEasy + aptitudeQuestionsMedium + aptitudeQuestionsHard;
+
+            const aptitudePercentage = Math.round((totalCompleted / totalExpected) * 100);
+
+            // console.log("API Response:", res.data);
+
+            // Update overall stats
+            setOverallStats(prev => ({
+                ...prev,
+                Aptitude: aptitudePercentage
+            }));
+
+            // Update individual aptitude stats
+            setAptitudeStats({
+                practiced: aptitudeQuestionsPracticed,
+                easy: aptitudeQuestionsEasy,
+                medium: aptitudeQuestionsMedium,
+                hard: aptitudeQuestionsHard
+            });
+        } catch (error) {
+            console.error("Error fetching aptitude progress", error);
+        }
     }, [token]);
+
+
+
+
 
     useEffect(() => {
         fetchQuizAttempts();
         fetchRoadmapProgress();
-    }, [fetchQuizAttempts, fetchRoadmapProgress]);
+        fetchAptitudeProgress();
+    }, [fetchQuizAttempts, fetchRoadmapProgress, fetchAptitudeProgress]);
 
     const handleSectionClick = (section) => {
         setSelectedSection(section);
         setShowModal(true);
-
-        if (section === "Quiz" || section === "Aptitude") {
-            fetchQuizAttempts();
-        }
     };
+
+    // const handleReviewClick = (attemptId) => {
+    //     // Navigate to review page (adjust route if needed)
+    //     window.location.href = `/review-quiz/${attemptId}`;
+    // };
+
+
 
     return (
         <div className="progress-container">
@@ -251,66 +194,138 @@ const ProgressTracking = () => {
                 ))}
             </div>
 
-            {/* 🔍 Quiz / Aptitude Modal */}
-            {showModal && (selectedSection === "Quiz" || selectedSection === "Aptitude") && (
+            {showModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <span className="close-btn" onClick={() => setShowModal(false)}>&times;</span>
-                        <h2>{selectedSection} Attempts</h2>
-                        {quizAttempts.length === 0 ? (
-                            <p>No attempts yet!</p>
-                        ) : (
-                            quizAttempts.map((attempt, index) => (
-                                <div className="attempt-box" key={index}>
-                                    <p><strong>Topic:</strong> {attempt.selectedOption}</p>
-                                    <p><strong>Date:</strong> {new Date(attempt.createdAt).toLocaleDateString()}</p>
-                                    <div className="bar-container">
-                                        <div
-                                            className="bar-fill"
-                                            style={{
-                                                width: `${(attempt.score / attempt.questions.length) * 100}%`
-                                            }}
-                                        >
-                                            {attempt.score}/{attempt.questions.length}
+
+                        {selectedSection === "Quiz" && (
+                            <>
+                                <h2>🧠 Quiz Attempts</h2>
+                                {quizAttempts.length === 0 ? (
+                                    <p>No attempts yet!</p>
+                                ) : (
+                                    quizAttempts.map((attempt, index) => {
+
+
+                                        return (
+                                            <div className="attempt-box" key={index}>
+                                                <p>
+                                                    <strong>Topic:</strong>{" "}
+                                                    <button
+                                                        onClick={() => handleReviewClick(attempt._id)}
+                                                        className="review-btn"
+                                                    >
+                                                        {attempt.selectedOption}
+                                                    </button>
+                                                </p>
+                                                <p><strong>Date:</strong> {new Date(attempt.createdAt).toLocaleDateString()}</p>
+
+                                                <p><strong>Time Taken:</strong> {attempt.timeTaken}</p>
+
+                                                <div className="bar-container">
+                                                    <div
+                                                        className="bar-fill"
+                                                        style={{ width: `${(attempt.score / attempt.questions.length) * 100}%` }}
+                                                    >
+                                                        {attempt.score}/{attempt.questions.length}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })
+                                )}
+                            </>
+                        )}
+
+                        {selectedSection === "Aptitude" && (
+                            <>
+                                <h2>📊 Aptitude Progress</h2>
+                                {aptitudeStats ? (
+                                    <>
+                                        <p><strong>Total Questions Practiced:</strong> {aptitudeStats.practiced}</p>
+                                        <div className="attempt-box">
+                                            <p>Easy: {aptitudeStats.easy}</p>
+                                            <p>Medium: {aptitudeStats.medium}</p>
+                                            <p>Hard: {aptitudeStats.hard}</p>
                                         </div>
+                                    </>
+                                ) : (
+                                    <p>No aptitude attempts yet!</p>
+                                )}
+                            </>
+                        )}
+
+                        {selectedSection === "Mock Interview" && (
+                            <>
+                                <h2>💬 Mock Interview</h2>
+                                <p>Mock Interview stats coming soon!</p>
+                            </>
+                        )}
+
+                        {selectedSection === "Roadmap" && roadmapProgress.length > 0 && (
+                            <>
+                                <h2>🗺️ Roadmap Progress</h2>
+                                {roadmapProgress.map((roadmap, rIndex) => (
+                                    <div key={rIndex} className="attempt-box" style={{ marginBottom: "20px" }}>
+                                        <p><strong>{roadmap.title}</strong></p>
+                                        <p><strong>Steps Completed:</strong> {roadmap.completedStepsCount} / {roadmap.totalSteps}</p>
+
+                                        <div className="bar-container" style={{ marginBottom: "10px" }}>
+                                            <div
+                                                className="bar-fill"
+                                                style={{ width: `${roadmap.completionPercent}%` }}
+                                            >
+                                                {roadmap.completionPercent}%
+                                            </div>
+                                        </div>
+
+                                        {Array.isArray(roadmap.steps) && roadmap.steps.map((step, stepIndex) => (
+                                            <div key={stepIndex} style={{ marginBottom: "10px" }}>
+                                                <strong>{step.step}</strong>
+                                                <ul style={{ marginLeft: "15px", marginTop: "5px" }}>
+                                                    {Array.isArray(step.subSteps) && step.subSteps.map((subStep, subIndex) => (
+                                                        <li key={subIndex} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={subStep.completed}
+                                                                onChange={async (e) => {
+                                                                    try {
+                                                                        await axios.patch(
+                                                                            "http://localhost:5000/api/roadmap/progress/update",
+                                                                            {
+                                                                                roadmapId: roadmap.roadmapId,
+                                                                                subStepText: subStep.text,
+                                                                                checked: e.target.checked
+                                                                            },
+                                                                            {
+                                                                                headers: { Authorization: `Bearer ${token}` }
+                                                                            }
+                                                                        );
+                                                                        const updated = [...roadmapProgress];
+                                                                        updated[rIndex].steps[stepIndex].subSteps[subIndex].completed = e.target.checked;
+                                                                        setRoadmapProgress(updated);
+                                                                    } catch (err) {
+                                                                        console.error("Failed to update substep:", err);
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <span style={{ textDecoration: subStep.completed ? "line-through" : "none" }}>
+                                                                {subStep.text}
+                                                            </span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        ))}
                                     </div>
-                                </div>
-                            ))
+                                ))}
+                            </>
                         )}
                     </div>
                 </div>
             )}
 
-            {/* 🌐 Roadmap Progress Modal */}
-            {showModal && selectedSection === "Roadmap" && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <span className="close-btn" onClick={() => setShowModal(false)}>&times;</span>
-                        <h2>🛣️ Roadmap Progress</h2>
-
-                        {roadmapProgress.length === 0 ? (
-                            <p>No roadmap followed yet!</p>
-                        ) : (
-                            roadmapProgress.map((item, index) => (
-                                <div className="attempt-box" key={index}>
-                                    <p><strong>{item.title}</strong></p>
-                                    <p>{item.completedSteps} / {item.totalSteps} steps completed</p>
-                                    <div className="bar-container">
-                                        <div
-                                            className="bar-fill"
-                                            style={{ width: `${item.completionPercent}%` }}
-                                        >
-                                            {item.completionPercent}%
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </div>
-            )}
-
-            {/* ✅ Weekly Summary + Motivation */}
             <div className="weekly-summary">
                 <h3>🌟 Weekly Motivation</h3>
                 <p>“Success is the sum of small efforts, repeated day in and day out.”</p>
@@ -321,7 +336,6 @@ const ProgressTracking = () => {
                 </ul>
             </div>
 
-            {/* 📊 Combined Growth Chart */}
             <div className="growth-chart">
                 <h2>📊 Overall Growth</h2>
                 <ResponsiveContainer width="100%" height={300}>
@@ -338,13 +352,5 @@ const ProgressTracking = () => {
 };
 
 export default ProgressTracking;
-
-
-
-
-
-
-
-
 
 

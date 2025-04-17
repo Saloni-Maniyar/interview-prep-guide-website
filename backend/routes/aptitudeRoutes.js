@@ -50,28 +50,28 @@ router.patch('/attempt', authenticateUser, async (req, res) => {
 
 // Fetch only aptitude progress for a specific user
 router.get('/aptitude-progress', authenticateUser, async (req, res) => {
-    try {
-      const progress = await Progress.findOne({ userId: req.user.id });
-  
-      if (!progress) {
-        return res.status(404).json({ message: 'Aptitude progress not found' });
-      }
-  
-      // Returning only the aptitude related progress
-      const aptitudeProgress = {
-        aptitudeQuestionsPracticed: progress.aptitudeQuestionsPracticed,
-        aptitudeQuestionsEasy: progress.aptitudeQuestionsEasy,
-        aptitudeQuestionsMedium: progress.aptitudeQuestionsMedium,
-        aptitudeQuestionsHard: progress.aptitudeQuestionsHard,
-      };
-  
-      res.json(aptitudeProgress);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server Error' });
+  try {
+    const progress = await Progress.findOne({ userId: req.user.id });
+
+    if (!progress) {
+      return res.status(404).json({ message: 'Aptitude progress not found' });
     }
-  });
-  
+
+    // Returning only the aptitude related progress
+    const aptitudeProgress = {
+      aptitudeQuestionsPracticed: progress.aptitudeQuestionsPracticed,
+      aptitudeQuestionsEasy: progress.aptitudeQuestionsEasy,
+      aptitudeQuestionsMedium: progress.aptitudeQuestionsMedium,
+      aptitudeQuestionsHard: progress.aptitudeQuestionsHard,
+    };
+
+    res.json(aptitudeProgress);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 
 
 
@@ -101,4 +101,4 @@ router.get('/questions/:difficulty', async (req, res) => {
   }
 });
 
-module.exports=router;
+module.exports = router;

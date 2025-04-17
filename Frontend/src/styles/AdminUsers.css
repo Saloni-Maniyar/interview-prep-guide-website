@@ -1,0 +1,20 @@
+.admin-users-container {
+    padding: 20px;
+}
+
+.admin-users-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-users-container th,
+.admin-users-container td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    margin-left: 10px;
+}

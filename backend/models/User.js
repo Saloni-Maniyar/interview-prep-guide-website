@@ -10,15 +10,8 @@ const userSchema = new mongoose.Schema({
     updatedAt: { type: Date, default: Date.now },
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpires: { type: Date, default: null },
-    // quizProgress: [
-    //     {
-    //         quizType: { type: String },
-    //         selectedOption: { type: String },
-    //         score: { type: Number },
-    //         total: { type: Number },
-    //         date: { type: Date, default: Date.now }
-    //     }
-    // ]
+    isBlocked: { type: Boolean, default: false },
+
 });
 
 module.exports = mongoose.model('User', userSchema);

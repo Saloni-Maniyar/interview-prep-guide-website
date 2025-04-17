@@ -5,11 +5,15 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const quizRoutes = require("./routes/quiz");
-
 const authRoutes = require('./routes/auth');
-const aptiRoutes=require('./routes/aptitudeRoutes');
+const aptiRoutes = require('./routes/aptitudeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const userRoutes = require('./routes/userRoutes');
+const roadmapRoutes = require('./routes/roadmapRoutes'); // Add this
+// const interviewRoutes = require('./routes/interviewRoutes');
+
+;
+const adminQuestionRoutes = require('./routes/adminQuestionRoutes');
+// const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 
@@ -36,23 +40,36 @@ connectDB();
 app.use('/api/auth', authRoutes);
 
 //use all other routes of user 
-app.use('/api/user', userRoutes);
+// app.use('/api/user', userRoutes);
 // Test Route
 app.get('/', (req, res) => {
     res.send('Backend is working!');
 });
 
-const roadmapRoutes = require('./routes/userRoutes');
-app.use('/api/userRoutes', roadmapRoutes);
+
+
+app.use('/api/roadmap', roadmapRoutes); // Add this line to handle /api/roadmap route
 
 
 app.use("/api/quiz", quizRoutes);
 
 //use aptitude module routes
-app.use("/api/aptitude",aptiRoutes);
+app.use("/api/aptitude", aptiRoutes);
+
+const interviewRoutes = require('./routes/interviewRoutes');
+app.use('/api/interview', interviewRoutes);
 
 //use admin routes
 app.use('/api/admin', adminRoutes);
+
+
+app.use('/api/admin', adminQuestionRoutes);
+
+const adminRoadmapRoutes = require('./routes/adminRoadmapRoutes');
+
+app.use('/api/admin', adminRoadmapRoutes);
+
+
 
 // Listen on port
 const PORT = process.env.PORT || 5000;

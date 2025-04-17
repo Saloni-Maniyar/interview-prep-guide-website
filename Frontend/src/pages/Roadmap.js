@@ -1,178 +1,63 @@
 
-import React, { useEffect, useState } from "react";
-import "../styles/Roadmap.css";
-import axios from "axios";
-import { Link } from "react-router-dom";
 
-const Roadmap = () => {
+// src/pages/Roadmaps.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const Roadmaps = () => {
     const [roadmaps, setRoadmaps] = useState([]);
-    const [selectedRoadmapId, setSelectedRoadmapId] = useState("");
-    const [currentRoadmap, setCurrentRoadmap] = useState(null);
-    const [completedSteps, setCompletedSteps] = useState({});
+    const [loading, setLoading] = useState(true);
 
-    // Fetch all roadmaps
     useEffect(() => {
+        // Fetching all roadmaps from the backend
         const fetchRoadmaps = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/user/roadmap");
-                console.log("Fetched Roadmaps:", res.data);
-                setRoadmaps(res.data);
-
-                // Set default roadmap
-                if (res.data.length > 0) {
-                    setSelectedRoadmapId(res.data[0]._id);
-                }
+                const response = await axios.get('http://localhost:5000/api/roadmap');
+                setRoadmaps(response.data);
+                setLoading(false);
             } catch (error) {
-                console.error("Error fetching roadmaps", error);
+                console.error('Error fetching roadmaps:', error);
+                setLoading(false);
             }
         };
 
         fetchRoadmaps();
     }, []);
 
-    // Fetch selected roadmap details
-    useEffect(() => {
-        const fetchSingleRoadmap = async () => {
-            if (!selectedRoadmapId) return;
-            try {
-                const res = await axios.get(`http://localhost:5000/api/user/roadmap/${selectedRoadmapId}`);
-                setCurrentRoadmap(res.data);
-            } catch (error) {
-                console.error("Error fetching single roadmap", error);
-            }
-        };
-
-        fetchSingleRoadmap();
-    }, [selectedRoadmapId]);
-
-    // Fetch completed steps of user
-    useEffect(() => {
-        const fetchProgress = async () => {
-            try {
-                const res = await axios.get("http://localhost:5000/api/user/roadmap/progress", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                });
-
-                const steps = {};
-                res.data.forEach(item => {
-                    item.completedSteps.forEach(step => {
-                        steps[step] = true;
-                    });
-                });
-
-                setCompletedSteps(steps);
-
-            } catch (error) {
-                if (error.response && error.response.status === 400) {
-                    console.warn("User has not followed any roadmap yet.");
-                } else {
-                    console.error("Error fetching progress", error);
-                }
-            }
-
-        };
-
-        fetchProgress();
-    }, []);
-
-
-    const followRoadmap = async (roadmapId) => {
+    const handleFollowRoadmap = async (roadmapId) => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/user/roadmap/follow/${roadmapId}`, {}, {
+            const response = await axios.post(`http://localhost:5000/api/roadmap/follow/${roadmapId}`, {}, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming you're storing JWT in localStorage
                 },
             });
-            console.log("Roadmap followed:", res.data);
+            alert(response.data.message);
+
+
         } catch (error) {
-            console.error("Error following roadmap", error);
+            console.error('Error following roadmap:', error);
+            alert('Failed to follow roadmap');
         }
     };
 
-
-    // Checkbox change
-    const handleCheckboxChange = async (roadmapId, subStepText, checked) => {
-        try {
-            setCompletedSteps(prev => ({
-                ...prev,
-                [subStepText]: checked,
-            }));
-
-            await axios.patch("http://localhost:5000/api/user/roadmap/progress/update", {
-                roadmapId,
-                subStepText,
-                checked,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
-        } catch (error) {
-            console.error("Failed to update progress:", error);
-        }
-    };
+    if (loading) {
+        return <div>Loading roadmaps...</div>;
+    }
 
     return (
-        <div className="roadmap-container">
-            <h1>Personalized Roadmap</h1>
-
-            <div className="dropdown-section">
-                <label htmlFor="role-select">Select Your Role:</label>
-                <select
-                    id="role-select"
-                    value={selectedRoadmapId}
-                    onChange={(e) => setSelectedRoadmapId(e.target.value)}
-                >
-                    <option value="" disabled>Select a Role</option>
-                    {roadmaps.map((rm) => (
-                        <option key={rm._id} value={rm._id}>
-                            {rm.role}
-                        </option>
-                    ))}
-                </select>
+        <div>
+            <h2>Available Roadmaps</h2>
+            <div className="roadmap-list">
+                {roadmaps.map((roadmap) => (
+                    <div key={roadmap._id} className="roadmap-card">
+                        <h3>{roadmap.title}</h3>
+                        <p>{roadmap.description}</p>
+                        <button onClick={() => handleFollowRoadmap(roadmap._id)}>Follow</button>
+                    </div>
+                ))}
             </div>
-
-            {currentRoadmap && (
-                <div className="roadmap">
-                    <h2>{currentRoadmap.title}</h2>
-                    <p>{currentRoadmap.description}</p>
-
-                    {currentRoadmap.steps.map((step, index) => (
-                        <div key={index} className="roadmap-step">
-                            <strong>{step.title}</strong>
-                            <ul>
-                                {step.subSteps.map((sub, subIndex) => (
-                                    <li key={subIndex}>
-                                        <input
-                                            type="checkbox"
-                                            checked={!!completedSteps[sub.text]}
-                                            onChange={() =>
-                                                handleCheckboxChange(
-                                                    currentRoadmap._id,
-                                                    sub.text,
-                                                    !completedSteps[sub.text]
-                                                )
-                                            }
-                                        />
-                                        <span className={completedSteps[sub.text] ? "completed" : ""}>
-                                            {sub.text}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            )}
-            <button onClick={() => followRoadmap(selectedRoadmapId)}>Follow this Roadmap</button>
-
-
-            <Link to="/Home" className="btn">Back to Home</Link>
         </div>
     );
 };
 
-export default Roadmap;
-
+export default Roadmaps;

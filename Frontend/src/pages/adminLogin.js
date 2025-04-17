@@ -2,18 +2,35 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import "../styles/AdminLogin.css";
+import axios from "axios";
 
 const AdminLogin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Add login API logic here
         console.log("Admin Login Attempt:", { email, password });
-        navigate("/admin/dashboard");
+
+        try {
+            const res = await axios.post("http://localhost:5000/api/admin/login", {
+                email,
+                password
+            }, {
+                withCredentials: true  // very important for cookies
+            });
+
+            console.log("Login successful", res.data);
+            navigate("/admin/dashboard"); // react dashboard page
+        } catch (error) {
+            console.error("Login failed", error.response?.data || error.message);
+            alert("Invalid credentials");
+        }
     };
+
+
 
     return (
         <div className="admin-login-container">
@@ -54,7 +71,8 @@ const AdminLogin = () => {
                     </form>
 
                     <p className="forgot-password">
-                        <a href="#">Forgot your password?</a>
+                        <a href="/admin/forgot-password">Forgot your password?</a>
+                        {/* <Link to="/admin/forgot-password">Forgot Password?</Link> */}
                     </p>
                     <p className="help-link">
                         Get help <a href="#">Signed in</a>.
