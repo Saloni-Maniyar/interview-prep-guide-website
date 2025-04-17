@@ -1,4 +1,4 @@
-/* .mock-interview-container {
+/*.mock-interview-container {
     display: flex;
     justify-content: space-between;
     padding: 20px;
@@ -7,7 +7,7 @@
 } */
 
 /* Left Sidebar */
-/* .left-sidebar,
+/*.left-sidebar,
 .right-sidebar {
     width: 20%;
     background: white;
@@ -35,7 +35,7 @@
 } */
 
 /* Progress Bar */
-/* .progress p {
+/*.progress p {
     font-size: 0.9rem;
     margin-top: 10px;
 }
@@ -47,7 +47,7 @@ progress {
 }
 
 /* Main Interview Box */
-/* .interview-box {
+/*.interview-box {
     width: 50%;
     background: white;
     padding: 20px;
@@ -97,7 +97,7 @@ textarea {
 } */
 
 /* Right Sidebar - Timer & Quote */
-/* .timer-box {
+/*.timer-box {
     font-size: 1.5rem;
     background: #ffeb3b;
     padding: 10px;
@@ -112,9 +112,7 @@ blockquote {
     padding: 10px;
     border-left: 5px solid #2196f3;
 } */
-
-
-
+/* Container for the whole mock interview card */
 .mock-interview-container {
     max-width: 800px;
     margin: 40px auto;
@@ -234,4 +232,5 @@ textarea:focus {
     font-weight: 600;
     color: #059669;
     margin-top: 20px;
+
 }

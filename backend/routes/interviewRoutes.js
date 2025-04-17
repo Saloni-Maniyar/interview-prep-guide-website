@@ -73,7 +73,6 @@ router.get('/mock-questions', authenticateUser, async (req, res) => {
 // ==========================
 router.post('/submit', authenticateUser, async (req, res) => {
     try {
-
         const { userId, answers } = req.body;
 
         if (!Array.isArray(answers) || answers.length === 0) {

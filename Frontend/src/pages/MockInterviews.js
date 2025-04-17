@@ -165,7 +165,7 @@ const MockInterview = () => {
             const response = await axios.post(
                 "http://localhost:5000/api/interview/submit",
                 {
-                    userId: userId,  // Send the userId with the submission
+                    // userId: userId,  // Send the userId with the submission
                     answers: finalResponses,
                 },
                 {

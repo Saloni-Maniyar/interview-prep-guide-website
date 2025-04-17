@@ -8,12 +8,8 @@ const quizRoutes = require("./routes/quiz");
 const authRoutes = require('./routes/auth');
 const aptiRoutes = require('./routes/aptitudeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const roadmapRoutes = require('./routes/roadmapRoutes'); // Add this
-// const interviewRoutes = require('./routes/interviewRoutes');
-
-;
-const adminQuestionRoutes = require('./routes/adminQuestionRoutes');
-// const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');
+const interviewRoutes = require('./routes/interviewRoutes');
 const app = express();
 
 
