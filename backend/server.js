@@ -8,8 +8,11 @@ const quizRoutes = require("./routes/quiz");
 const authRoutes = require('./routes/auth');
 const aptiRoutes = require('./routes/aptitudeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const userRoutes = require('./routes/userRoutes');
+// const userRoutes = require('./routes/userRoutes');
 const interviewRoutes = require('./routes/interviewRoutes');
+const roadmapRoutes = require('./routes/roadmapRoutes')
+
+const adminQuestionRoutes = require('./routes/adminQuestionRoutes')
 const app = express();
 
 
@@ -52,7 +55,7 @@ app.use("/api/quiz", quizRoutes);
 //use aptitude module routes
 app.use("/api/aptitude", aptiRoutes);
 
-const interviewRoutes = require('./routes/interviewRoutes');
+// const interviewRoutes = require('./routes/interviewRoutes');
 app.use('/api/interview', interviewRoutes);
 
 //use admin routes

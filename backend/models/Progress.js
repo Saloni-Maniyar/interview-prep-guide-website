@@ -44,7 +44,7 @@ const progressSchema = new mongoose.Schema({
   roadmapId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Roadmap',
-    required:false,
+    required: false,
   },
   completedSteps: [{ type: String }],
   quizScores: [
@@ -56,18 +56,11 @@ const progressSchema = new mongoose.Schema({
   ],
 
   aptitudeQuestionsPracticed: { type: Number, default: 0 },
-<<<<<<< HEAD
   aptitudeQuestionsEasy: { type: Number, default: 0 },       // Easy questions
   aptitudeQuestionsMedium: { type: Number, default: 0 },     // Medium questions
   aptitudeQuestionsHard: { type: Number, default: 0 },       //Hard questions
 
-=======
-  aptitudeQuestionsEasy: { type: Number, default: 0 },
-  aptitudeQuestionsMedium: { type: Number, default: 0 },
-  aptitudeQuestionsHard: { type: Number, default: 0 },
-
   //Mock Interview progress
->>>>>>> 12c17467f809e5a678640da95ca7f28266e466ec
   mockInterview: {
     totalInterviews: { type: Number, default: 0 },
     lastInterviewDate: { type: Date, default: null },
