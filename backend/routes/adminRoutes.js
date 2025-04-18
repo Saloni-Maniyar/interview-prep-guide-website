@@ -8,7 +8,8 @@ const transporter = require('../config/nodemailer');
 const User = require('../models/User');
 const QuizAttempt = require('../models/QuizAttempt');
 const Roadmap = require('../models/Roadmap');
-// const MockInterviewProgress = require('../models/MockInterviewProgress');
+const ContactMessage = require('../models/ContactMessage');
+// const MockInterviewProgress = require('../models/MockInterviewAnswer');
 
 const { authenticateAdmin } = require('../middleware/adminMiddleware');
 
@@ -162,21 +163,150 @@ router.get('/stats', authenticateAdmin, async (req, res) => {
         const totalUsers = await User.countDocuments();
         const totalQuizzes = await QuizAttempt.countDocuments();  // use your actual quiz progress model name
         const totalRoadmaps = await Roadmap.countDocuments();
-        const totalMockInterviews = await MockInterviewProgress.countDocuments(); // if you have this
+        // const totalMockInterviews = await MockInterviewProgress.countDocuments(); // if you have this
 
         res.json({
             totalUsers,
             totalQuizzes,
             totalRoadmaps,
-            totalMockInterviews
+            totalMockInterviews: 0
         });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 });
 
+router.get('/contact-messages', authenticateAdmin, async (req, res) => {
+    const messages = await ContactMessage.find().sort({ createdAt: -1 });
+    res.json(messages);
+});
 
 
+
+
+router.post('/contact-messages/:id/reply', authenticateAdmin, async (req, res) => {
+    const { reply } = req.body;
+
+    try {
+        const message = await ContactMessage.findByIdAndUpdate(
+            req.params.id,
+            { reply },
+            { new: true }
+        );
+
+        if (!message) {
+            return res.status(404).json({ message: "Message not found" });
+        }
+
+        // Send reply to user's email
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: message.email,
+            subject: "Reply from InterviewPrep Admin",
+            text: `Hello ${message.name},\n\n${reply}\n\nThank you for reaching out!`,
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.json({ message: "Reply sent and emailed", data: message });
+
+    } catch (error) {
+        console.error("Error replying to contact message:", error);
+        res.status(500).json({ message: "Server error", error });
+    }
+});
+
+
+// // ✅ GET latest activity for Admin Dashboard
+// router.get('/latest-activity', authenticateAdmin, async (req, res) => {
+//     try {
+//         const latestUsers = await User.find().sort({ createdAt: -1 }).limit(5).select('name email createdAt');
+//         const latestQuizzes = await QuizAttempt.find().sort({ createdAt: -1 }).limit(5).populate('user', 'name email').select('score createdAt');
+//         const latestContactMessages = await ContactMessage.find().sort({ createdAt: -1 }).limit(5).select('name email message createdAt');
+//         const latestRoadmaps = await Roadmap.find().sort({ createdAt: -1 }).limit(5).select('title createdAt');
+
+//         res.json({
+//             latestUsers,
+//             latestQuizzes,
+//             latestContactMessages,
+//             latestRoadmaps
+//         });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Failed to fetch latest activity', error });
+//     }
+// });
+
+
+// router.get('/latest-activity', authenticateAdmin, async (req, res) => {
+//     try {
+//         const latestUsers = await User.find().sort({ createdAt: -1 }).limit(5).select('name email createdAt');
+
+//         const latestQuizzes = await QuizAttempt.find()
+//             .sort({ createdAt: -1 })
+//             .limit(5)
+//             .populate('userId', 'name email')
+//             .select('score createdAt');
+
+//         const latestContactMessages = await ContactMessage.find()
+//             .sort({ createdAt: -1 })
+//             .limit(5)
+//             .select('name email message createdAt');
+
+//         const latestRoadmaps = await Roadmap.find()
+//             .sort({ createdAt: -1 })
+//             .limit(5)
+//             .select('title createdAt');
+
+//         console.log("Activity Fetched", {
+//             latestUsers,
+//             latestQuizzes,
+//             latestContactMessages,
+//             latestRoadmaps
+//         });
+
+//         res.json({
+//             latestUsers,
+//             latestQuizzes,
+//             latestContactMessages,
+//             latestRoadmaps
+//         });
+//     } catch (error) {
+//         console.error("🔥 Error in /latest-activity route:", error);
+//         res.status(500).json({ message: 'Failed to fetch latest activity', error });
+//     }
+// });
+
+
+
+
+router.get('/latest-activity', authenticateAdmin, async (req, res) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const [latestUsers, latestQuizzes, latestContactMessages, latestRoadmaps] = await Promise.all([
+            User.find({ createdAt: { $gte: today } }).sort({ createdAt: -1 }).limit(5).select('name email createdAt'),
+            QuizAttempt.find({ createdAt: { $gte: today } })
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .populate('userId', 'name email')
+                .select('score createdAt'),
+            ContactMessage.find({ createdAt: { $gte: today } }).sort({ createdAt: -1 }).limit(5).select('name email message createdAt'),
+            Roadmap.find({ createdAt: { $gte: today } }).sort({ createdAt: -1 }).limit(5).select('title createdAt')
+        ]);
+
+        res.json({
+            latestUsers,
+            latestQuizzes,
+            latestContactMessages,
+            latestRoadmaps
+        });
+
+    } catch (error) {
+        console.error("🔥 Error in /latest-activity route:", error);
+        res.status(500).json({ message: 'Failed to fetch latest activity', error });
+    }
+});
 
 module.exports = router;
 

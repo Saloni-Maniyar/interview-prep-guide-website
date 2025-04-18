@@ -11,6 +11,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recha
 
 const ProgressTracking = () => {
     const [selectedSection, setSelectedSection] = useState(null);
+    const [mockInterviewProgress, setMockInterviewProgress] = useState(null);
     const [quizAttempts, setQuizAttempts] = useState([]);
     const [roadmapProgress, setRoadmapProgress] = useState([]);
     const [aptitudeStats, setAptitudeStats] = useState(null);
@@ -107,6 +108,8 @@ const ProgressTracking = () => {
     }, [userId, token]);
 
 
+
+
     const fetchAptitudeProgress = useCallback(async () => {
         try {
             const res = await axios.get(
@@ -156,6 +159,22 @@ const ProgressTracking = () => {
         }
     }, [token]);
 
+    const fetchMockInterviewProgress = useCallback(async () => {
+        try {
+            const response = await axios.get("http://localhost:5000/api/interview/progress", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            setMockInterviewProgress(response.data);
+        } catch (error) {
+            console.error("Error fetching mock interview progress:", error);
+        }
+    }, []);
+
+
+
+
 
 
 
@@ -164,7 +183,8 @@ const ProgressTracking = () => {
         fetchQuizAttempts();
         fetchRoadmapProgress();
         fetchAptitudeProgress();
-    }, [fetchQuizAttempts, fetchRoadmapProgress, fetchAptitudeProgress]);
+        fetchMockInterviewProgress();
+    }, [fetchQuizAttempts, fetchRoadmapProgress, fetchAptitudeProgress, fetchMockInterviewProgress]);
 
     const handleSectionClick = (section) => {
         setSelectedSection(section);
@@ -254,14 +274,44 @@ const ProgressTracking = () => {
                                     <p>No aptitude attempts yet!</p>
                                 )}
                             </>
+
                         )}
 
-                        {selectedSection === "Mock Interview" && (
+
+                        {selectedSection === "Mock Interview" && mockInterviewProgress && (
                             <>
-                                <h2>💬 Mock Interview</h2>
-                                <p>Mock Interview stats coming soon!</p>
+                                <h2>🗣️ Mock Interview Progress</h2>
+                                <div className="attempt-box" style={{ marginBottom: "20px" }}>
+                                    <p><strong>Total Interviews:</strong> {mockInterviewProgress.totalInterviews}</p>
+                                    <p><strong>Last Interview:</strong> {new Date(mockInterviewProgress.lastInterviewDate).toLocaleString()}</p>
+                                    <p><strong>Average Score:</strong> {mockInterviewProgress.averageScore.toFixed(2)} / 5</p>
+
+                                    <div className="bar-container" style={{ marginBottom: "10px" }}>
+                                        <div
+                                            className="bar-fill"
+                                            style={{
+                                                width: `${(mockInterviewProgress.averageScore / 5) * 100}%`,
+                                                backgroundColor: "#4caf50",
+                                                color: "#fff"
+                                            }}
+                                        >
+                                            {(mockInterviewProgress.averageScore / 5 * 100).toFixed(0)}%
+                                        </div>
+                                    </div>
+
+                                    <h4 style={{ marginTop: "1rem" }}>📋 Feedback Summary</h4>
+                                    {mockInterviewProgress.feedbackSummary.map((item, index) => (
+                                        <div key={index} className="attempt-box" style={{ marginTop: "10px" }}>
+                                            <p><strong>Date:</strong> {new Date(item.date).toLocaleDateString()}</p>
+                                            <p><strong>Tech Score:</strong> {item.techScore}</p>
+                                            <p><strong>HR Score:</strong> {item.hrScore}</p>
+                                            <p><strong>Feedback:</strong> {item.overallFeedback}</p>
+                                        </div>
+                                    ))}
+                                </div>
                             </>
                         )}
+
 
                         {selectedSection === "Roadmap" && roadmapProgress.length > 0 && (
                             <>

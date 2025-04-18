@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/FAQs.css";
-import LandingNavbar from "../components/LandingPagenavbar"; // Navbar import
+// import LandingNavbar from "../components/LandingPagenavbar"; // Navbar import
 const faqsData = [
     { question: "What is Interview Prep?", answer: "Interview Prep is a platform that helps students prepare for technical interviews with structured roadmaps, mock interviews, and coding practice." },
     { question: "Is this platform free?", answer: "Yes! We offer free resources." },
@@ -17,7 +17,7 @@ const FAQs = () => {
 
     return (
         <>
-            <LandingNavbar />
+            {/* <LandingNavbar /> */}
             <div className="faqs-container">
                 <h2>Frequently Asked Questions</h2>
                 <div className="faqs-list">

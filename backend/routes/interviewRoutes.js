@@ -73,7 +73,9 @@ router.get('/mock-questions', authenticateUser, async (req, res) => {
 // ==========================
 router.post('/submit', authenticateUser, async (req, res) => {
     try {
-        const { userId, answers } = req.body;
+
+        const userId = req.user._id;
+        const { answers } = req.body;
 
         if (!Array.isArray(answers) || answers.length === 0) {
             return res.status(400).json({ message: 'Answers must be a non-empty array.' });
@@ -195,4 +197,29 @@ router.get('/progress', authenticateUser, async (req, res) => {
     }
 });
 
+// //HR Speech based
+// router.get("/hr", async (req, res) => {
+//     try {
+//         const hrQuestions = await InterviewQuestion.find({ type: "HR" });
+//         res.json(hrQuestions);
+//     } catch (error) {
+//         console.error("Error fetching HR questions:", error);
+//         res.status(500).json({ message: "Failed to fetch HR questions." });
+//     }
+// });
+
+// HR Speech-Based Interview Questions (with auth)
+router.get("/hr", authenticateUser, async (req, res) => {
+    try {
+        const hrQuestions = await InterviewQuestion.aggregate([
+            { $match: { type: "HR" } },
+            { $sample: { size: 5 } } // returns 5 random HR questions
+        ]);
+
+        res.status(200).json({ questions: hrQuestions });
+    } catch (error) {
+        console.error("Error fetching HR questions:", error);
+        res.status(500).json({ message: "Failed to fetch HR questions." });
+    }
+});
 module.exports = router;

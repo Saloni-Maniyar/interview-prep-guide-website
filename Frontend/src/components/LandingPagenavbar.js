@@ -22,6 +22,7 @@ const LandingNavbar = ({ setShowModal }) => {
                 <Link to="/blog" className="nav-link">Blog</Link>
                 <Link to="/ContactUs" className="nav-link">ContactUs</Link>
                 <Link to="/FAQs" className="nav-link">FAQs</Link>
+                {/* <Link to="/HRInterview" className="nav-link">HR</Link> */}
                 {/* <Link to="/login" className="login-btn">Login</Link> */}
                 <button className="login-btn" onClick={() => setShowModal(true)}>Login</button>
 

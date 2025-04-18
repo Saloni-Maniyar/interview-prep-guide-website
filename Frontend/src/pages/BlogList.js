@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Blog.css";
-import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
+// import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
 
 
 const blogData = [
@@ -28,7 +28,7 @@ const blogData = [
 const BlogList = () => {
     return (
         <>
-            <LandingNavbar />
+            {/* <LandingNavbar /> */}
             <div className="blog-container">
                 <h2>Latest Blog Posts</h2>
                 <div className="blog-list">

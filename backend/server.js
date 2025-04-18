@@ -11,6 +11,7 @@ const adminRoutes = require('./routes/adminRoutes');
 // const userRoutes = require('./routes/userRoutes');
 const interviewRoutes = require('./routes/interviewRoutes');
 const roadmapRoutes = require('./routes/roadmapRoutes')
+const contactRoutes = require('./routes/contactRoutes');
 
 const adminQuestionRoutes = require('./routes/adminQuestionRoutes')
 const app = express();
@@ -49,7 +50,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/roadmap', roadmapRoutes); // Add this line to handle /api/roadmap route
 
-
+app.use('/api/contact', contactRoutes);
 app.use("/api/quiz", quizRoutes);
 
 //use aptitude module routes

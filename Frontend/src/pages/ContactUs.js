@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/ContactUs.css";
-import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
+// import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -9,15 +9,29 @@ const ContactUs = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert("Message Sent! We'll get back to you soon.");
-        setFormData({ name: "", email: "", message: "" });
+        try {
+            await fetch("http://localhost:5000/api/contact/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            alert("Message Sent! We'll get back to you soon.");
+            setFormData({ name: "", email: "", message: "" });
+        } catch (error) {
+            alert("Failed to send message.");
+            console.error(error);
+        }
     };
+
+
 
     return (
         <>
-            <LandingNavbar />
+            {/* <LandingNavbar /> */}
             <div className="contact-container">
                 <h2>Get in Touch</h2>
 

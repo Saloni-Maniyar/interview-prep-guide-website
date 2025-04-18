@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/Testimonials.css";
-import LandingNavbar from "../components/LandingPagenavbar"; // Navbar import
+// import LandingNavbar from "../components/LandingPagenavbar"; // Navbar import
 
 const testimonials = [
     {
@@ -47,7 +47,7 @@ const renderStars = (rating) => {
 const Testimonials = () => {
     return (
         <>
-            <LandingNavbar />
+            {/* <LandingNavbar /> */}
             <div className="testimonials-container">
                 <h1>What Our Users Say</h1>
                 <div className="testimonials-grid">

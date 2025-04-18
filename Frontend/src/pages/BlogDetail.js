@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import "../styles/Blog.css";
-import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
+// import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
 
 
 const blogData = [
@@ -33,7 +33,7 @@ const BlogDetail = () => {
 
     return (
         <>
-            <LandingNavbar />
+            {/* <LandingNavbar /> */}
             <div className="blog-detail">
                 <img src={blog.image} alt={blog.title} />
                 <h2>{blog.title}</h2>

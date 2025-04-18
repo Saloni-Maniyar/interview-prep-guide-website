@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/FeaturesPage.css";
-import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
+// import LandingNavbar from "../components/LandingPagenavbar"; // Import Navbar
 
 const FeaturesPage = () => {
     const features = [
@@ -33,7 +33,7 @@ const FeaturesPage = () => {
 
     return (
         <>
-            <LandingNavbar />
+            {/* <LandingNavbar /> */}
             <div className="features-container">
                 <h1>Key Features</h1>
                 <div className="features-grid">

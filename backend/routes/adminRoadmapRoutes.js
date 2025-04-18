@@ -23,6 +23,20 @@ router.post('/roadmap', async (req, res) => {
     }
 });
 
+// Get a specific roadmap by ID
+router.get('/roadmap/:id', async (req, res) => {
+    try {
+        const roadmap = await Roadmap.findById(req.params.id);
+        if (!roadmap) {
+            return res.status(404).json({ message: 'Roadmap not found' });
+        }
+        res.json(roadmap);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+
 // Edit a roadmap
 router.put('/roadmap/:id', async (req, res) => {
     try {

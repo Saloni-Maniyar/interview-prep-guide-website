@@ -1,13 +1,13 @@
 import React from "react";
 import "../styles/AboutUs.css";
 import { useNavigate } from "react-router-dom";
-import LandingNavbar from "../components/LandingPagenavbar";
+// import LandingNavbar from "../components/LandingPagenavbar";
 
 const AboutUs = () => {
     const navigate = useNavigate();
     return (
         <>
-            <LandingNavbar />
+            {/* <LandingNavbar /> */}
             <div className="about-us-container">
                 {/* Hero Section */}
                 <section className="hero-section">
