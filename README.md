@@ -127,36 +127,70 @@ interview-prep-guide-website/
 
 ## 📸 Screenshots
 
-![About Us](./Screenshots/AboutUs.jpg)
-![Admin Dashboard](./Screenshots/adminDashboard.jpg)
-![Admin Question Add](./Screenshots/AdminQueAdd.jpg)
-![Admin Roadmap Manage](./Screenshots/AdminRoadmapManage.jpg)
-![Aptitude Progress](./Screenshots/AptiProgress.png)
-![Aptitude Questions](./Screenshots/AptiQuestions.jpg)
-![Aptitude Questions Easy](./Screenshots/AptitudeQuestionsEasy.jpg)
-![Blog Page](./Screenshots/BlogPage.jpg)
-![Cheating Detected](./Screenshots/CheatingDetected.jpg)
-![Contact Manage](./Screenshots/ContactManage.jpg)
-![Contact Us](./Screenshots/ContactUs.jpg)
-![Detailed Roadmap](./Screenshots/DetailedRoadmap.jpg)
-![Edit Question](./Screenshots/EditQue.jpg)
-![FAQ](./Screenshots/FAQ.jpg)
-![Features](./Screenshots/features.jpg)
+### 🏠 Homepage
+
 ![Homepage](./Screenshots/homepage.jpg)
+
+---
+
+### 📄 Static & Informational Pages
+
+![About Us](./Screenshots/AboutUs.jpg)  
+![Blog Page](./Screenshots/BlogPage.jpg)  
+![FAQ](./Screenshots/FAQ.jpg)  
+![Contact Us](./Screenshots/ContactUs.jpg)  
+![Static Testimonials](./Screenshots/StaticTestimonials.jpg)  
+![Features](./Screenshots/features.jpg)  
 ![How It Works](./Screenshots/HowItWorks.jpg)
-![Interview Progress](./Screenshots/InterviewProgress.jpg)
-![Mock Interview Page](./Screenshots/MockInterviewPage.jpg)
-![Ongoing Mock Interview](./Screenshots/OnGoingMockInterview.jpg)
-![Overall Growth](./Screenshots/OverallGrowth.jpg)
-![Progress Tracking](./Screenshots/ProgressTracking.jpg)
-![Quiz Progress](./Screenshots/QuizProgress.png)
-![Quiz Topic-wise](./Screenshots/QuizTopicwise.jpg)
-![Roadmap Dashboard](./Screenshots/RoadmapDashboard.jpg)
-![Roadmap Follow](./Screenshots/RoadmapFollow.jpg)
+
+---
+
+### 🚀 Project Features (User Perspective)
+
+#### Roadmaps
+
+![Roadmap Dashboard](./Screenshots/RoadmapDashboard.jpg)  
+![Detailed Roadmap](./Screenshots/DetailedRoadmap.jpg)  
+![Roadmap Follow](./Screenshots/RoadmapFollow.jpg)  
 ![Roadmap Progress](./Screenshots/RoadmapProgress.jpg)
-![Static Testimonials](./Screenshots/StaticTestimonials.jpg)
+
+#### Aptitude
+
+![Aptitude Questions](./Screenshots/AptiQuestions.jpg)  
+![Aptitude Questions Easy](./Screenshots/AptitudeQuestionsEasy.jpg)  
+![Aptitude Progress](./Screenshots/AptiProgress.png)
+
+#### Quiz
+
+![Quiz Topic-wise](./Screenshots/QuizTopicwise.jpg)  
+![Quiz Progress](./Screenshots/QuizProgress.png)
+
+#### Mock Interview
+
+![Mock Interview Page](./Screenshots/MockInterviewPage.jpg)  
+![Ongoing Mock Interview](./Screenshots/OnGoingMockInterview.jpg)  
+![Interview Progress](./Screenshots/InterviewProgress.jpg)  
+![Cheating Detected](./Screenshots/CheatingDetected.jpg)
+
+#### User Progress
+
+![Progress Tracking](./Screenshots/ProgressTracking.jpg)  
+![Overall Growth](./Screenshots/OverallGrowth.jpg)
+
+#### Authentication
+
 ![User Login](./Screenshots/UserLogin.jpg)
-![Users Registered (Admin)](./Screenshots/UsersRegisteredAdminDashB.png)
+
+---
+
+### 🛠️ Admin Dashboard and Management
+
+![Admin Dashboard](./Screenshots/adminDashboard.jpg)  
+![Admin Question Add](./Screenshots/AdminQueAdd.jpg)  
+![Edit Question](./Screenshots/EditQue.jpg)  
+![Admin Roadmap Manage](./Screenshots/AdminRoadmapManage.jpg)  
+![Users Registered (Admin)](./Screenshots/UsersRegisteredAdminDashB.png)  
+![Contact Manage](./Screenshots/ContactManage.jpg)
 
 ---
 
