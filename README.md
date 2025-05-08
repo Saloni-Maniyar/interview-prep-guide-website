@@ -133,7 +133,9 @@ interview-prep-guide-website/
 
 ---
 
-### 📄 Static & Informational Pages
+
+### 📄Informational Pages
+
 
 ![About Us](./Screenshots/AboutUs.jpg)  
 ![Blog Page](./Screenshots/BlogPage.jpg)  
