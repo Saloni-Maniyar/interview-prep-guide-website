@@ -6,24 +6,24 @@ A full-stack Interview Preparation Guide built using the **MERN Stack** to help 
 
 ## ✨ Features
 
-- 🔐 User and Admin Login/Registration with JWT authentication
-- 🗂️ Learning Roadmaps for guided preparation
-- 🧠 Aptitude Practice and MCQ-based Quizzes (separate modules)
-- 🎤 Mock Interview Module with keyword-based feedback
-- 📊 Individual Progress Tracking
-- 🧑‍💼 Admin Panel for managing Roadmaps, Questions, Users, Contacts
-- 📬 Contact Us form handling
-- 📁 Screenshots folder included to preview UI
+- 🔐 User and Admin Login/Registration with JWT authentication  
+- 🗂️ Learning Roadmaps for guided preparation  
+- 🧠 Aptitude Practice and MCQ-based Quizzes (separate modules)  
+- 🎤 Mock Interview Module with keyword-based feedback  
+- 📊 Individual Progress Tracking  
+- 🧑‍💼 Admin Panel for managing Roadmaps, Questions, Users, Contacts  
+- 📬 Contact Us form handling  
+- 📁 Screenshots folder included to preview UI  
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js, CSS (no Tailwind used)
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB with Mongoose
-- **Authentication:** JWT & bcrypt
-- **Testing Tools:** Postman
+- **Frontend:** React.js, CSS (no Tailwind used)  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB with Mongoose  
+- **Authentication:** JWT & bcrypt  
+- **Testing Tools:** Postman  
 
 ---
 
@@ -33,7 +33,7 @@ We explored integrating AI for generating mock interview feedback using OpenAI a
 - OpenAI’s API was paid and not feasible for student use.
 - HuggingFace services were unavailable during testing.
 
-As a result, we implemented a non-AI feedback mechanism based on keyword matching, and kept the unused AI integration files (`huggingFace.js`, `openai.js`) in the repository for future reference.
+So, we implemented a **non-AI feedback system** using keyword matching. Reference files like `huggingFace.js` and `openai.js` are kept in the repo for future upgrades.
 
 ---
 
@@ -96,7 +96,7 @@ interview-prep-guide-website/
 
 ## 👥 Team Contributions
 
-### 🧑‍💻 [Saloni-Maniyar]
+### 🧑‍💻 Saloni Maniyar
 
 - Developed the **entire backend** excluding admin and contact modules.
 - Handled **JWT-based authentication** for users and admins with password hashing (bcrypt).
@@ -109,8 +109,8 @@ interview-prep-guide-website/
   - Progress tracking
 - Integrated and tested backend using **Postman**.
 - Set up **MongoDB schemas** and performed database configurations.
-- Contributed to frontend ( interview module).
-- Responsible for final backend  testing.
+- Contributed to frontend (interview module).
+- Responsible for final backend testing.
 
 ### 🧑‍🎨 Ruchita Mule
 
@@ -121,15 +121,12 @@ interview-prep-guide-website/
   - Roadmap visualization
   - Admin dashboard and all admin management pages
 - Developed backend and frontend for **admin** and **contact** modules.
-- Also made frontend-level adjustments including some modifications in quiz and related backend areas.
-
+- Made frontend-level improvements and minor backend enhancements.
 
 ---
 
 ## 📸 Screenshots
 
-
-```markdown
 ![About Us](./Screenshots/AboutUs.jpg)
 ![Admin Dashboard](./Screenshots/adminDashboard.jpg)
 ![Admin Question Add](./Screenshots/AdminQueAdd.jpg)
@@ -160,7 +157,6 @@ interview-prep-guide-website/
 ![Static Testimonials](./Screenshots/StaticTestimonials.jpg)
 ![User Login](./Screenshots/UserLogin.jpg)
 ![Users Registered (Admin)](./Screenshots/UsersRegisteredAdminDashB.png)
-```
 
 ---
 
@@ -170,6 +166,4 @@ For queries or feedback, reach out via the Contact Us form on the website.
 
 ---
 
-
-
-This project is developed as part of a college semester project. 
+> 📌 This project was developed as part of a college semester project, just like the Nutrition Analyzer website.
