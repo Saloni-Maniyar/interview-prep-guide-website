@@ -121,7 +121,7 @@ interview-prep-guide-website/
   - Roadmap visualization
   - Admin dashboard and all admin management pages
 - Developed backend and frontend for **admin** and **contact** modules.
-- Also made frontend-level adjustments including some modifications in quiz and related backend areas close to submission time.
+- Also made frontend-level adjustments including some modifications in quiz and related backend areas.
 
 
 ---
