@@ -13,7 +13,7 @@ const calculateAnswerScore = (userAnswer, keywords) => {
 
     const lowerAnswer = userAnswer.toLowerCase();
     let score = 0;
-
+    
     keywords.forEach(keyword => {
         const trimmedKeyword = keyword.trim().toLowerCase();
         if (trimmedKeyword && lowerAnswer.includes(trimmedKeyword)) {

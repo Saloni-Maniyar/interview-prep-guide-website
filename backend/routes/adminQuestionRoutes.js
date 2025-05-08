@@ -3,7 +3,7 @@ const router = express.Router();
 const Question = require('../models/Questions');
 const { authenticateAdmin } = require('../middleware/adminMiddleware');
 
-// ✅ GET all questions
+//  GET all questions
 router.get('/questions', authenticateAdmin, async (req, res) => {
     const questions = await Question.find();
     res.json(questions);

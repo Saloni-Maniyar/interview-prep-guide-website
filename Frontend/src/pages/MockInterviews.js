@@ -586,36 +586,6 @@ const MockInterview = () => {
         }
     };
 
-    // // Cheating detection (window blur)
-    // useEffect(() => {
-    //     const handleBlur = async () => {
-    //         if (isInterviewStarted && !isInterviewFinished) {
-    //             const newCount = cheatingCount + 1;
-    //             setCheatingCount(newCount);
-
-    //             if (newCount >= 3) {
-    //                 alert("Cheating detected 3 times. Auto-submitting interview.");
-    //                 const currentQuestion = questions[currentQuestionIndex];
-    //                 const responseObj = {
-    //                     questionId: currentQuestion?._id,
-    //                     userAnswer: answer.trim(),
-    //                 };
-
-    //                 const finalResponses = [...responses];
-    //                 if (currentQuestion) {
-    //                     finalResponses.push(responseObj);
-    //                 }
-
-    //                 await submitInterview(finalResponses);
-    //             } else {
-    //                 alert(`Cheating detected (${newCount}/3)! Do not switch tabs or minimize the window.`);
-    //             }
-    //         }
-    //     };
-
-    //     window.addEventListener("blur", handleBlur);
-    //     return () => window.removeEventListener("blur", handleBlur);
-    // }, [isInterviewStarted, isInterviewFinished, cheatingCount, answer, responses, currentQuestionIndex, questions, submitInterview]);
 
     useEffect(() => {
         const handleBlur = async () => {
