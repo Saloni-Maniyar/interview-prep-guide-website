@@ -117,7 +117,7 @@ router.delete('/unfollow/:roadmapId', authenticateUser, async (req, res) => {
 
 
 
-// ✅ Refactored route to fetch all roadmap progress with percentage, title, and total/completed steps
+//  Refactored route to fetch all roadmap progress with percentage, title, and total/completed steps
 router.get('/progress/:userId', authenticateUser, async (req, res) => {
   const userId = req.user._id;
 
@@ -163,7 +163,7 @@ router.get('/progress/:userId', authenticateUser, async (req, res) => {
 
 
 
-// ✅ Update progress on checkbox toggle
+//  Update progress on checkbox toggle
 router.patch('/progress/update', authenticateUser, async (req, res) => {
   const userId = req.user._id;
   const { roadmapId, subStepText, checked } = req.body;
@@ -199,7 +199,7 @@ router.patch('/progress/update', authenticateUser, async (req, res) => {
 
 
 
-// ✅ Fetch specific roadmap by ID
+//  Fetch specific roadmap by ID
 router.get('/:roadmapid', async (req, res) => {
   try {
     const roadmap = await Roadmap.findById(req.params.roadmapid);
