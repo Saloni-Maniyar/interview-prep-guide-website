@@ -121,7 +121,7 @@ router.get("/dashboard", authenticateAdmin, (req, res) => {
     res.json({ message: "Welcome Admin!", adminId: req.adminId });
 });
 
-// ✅ GET all users
+//  GET all users
 router.get('/users', authenticateAdmin, async (req, res) => {
     try {
         const users = await User.find();
@@ -131,7 +131,7 @@ router.get('/users', authenticateAdmin, async (req, res) => {
     }
 });
 
-// ✅ BLOCK/UNBLOCK a user
+//  BLOCK/UNBLOCK a user
 router.patch('/user/:id/block', authenticateAdmin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -146,7 +146,7 @@ router.patch('/user/:id/block', authenticateAdmin, async (req, res) => {
     }
 });
 
-// ✅ DELETE a user
+//  DELETE a user
 router.delete('/user/:id', authenticateAdmin, async (req, res) => {
     try {
         const deletedUser = await User.findByIdAndDelete(req.params.id);
@@ -215,66 +215,6 @@ router.post('/contact-messages/:id/reply', authenticateAdmin, async (req, res) =
         res.status(500).json({ message: "Server error", error });
     }
 });
-
-
-// // ✅ GET latest activity for Admin Dashboard
-// router.get('/latest-activity', authenticateAdmin, async (req, res) => {
-//     try {
-//         const latestUsers = await User.find().sort({ createdAt: -1 }).limit(5).select('name email createdAt');
-//         const latestQuizzes = await QuizAttempt.find().sort({ createdAt: -1 }).limit(5).populate('user', 'name email').select('score createdAt');
-//         const latestContactMessages = await ContactMessage.find().sort({ createdAt: -1 }).limit(5).select('name email message createdAt');
-//         const latestRoadmaps = await Roadmap.find().sort({ createdAt: -1 }).limit(5).select('title createdAt');
-
-//         res.json({
-//             latestUsers,
-//             latestQuizzes,
-//             latestContactMessages,
-//             latestRoadmaps
-//         });
-//     } catch (error) {
-//         res.status(500).json({ message: 'Failed to fetch latest activity', error });
-//     }
-// });
-
-
-// router.get('/latest-activity', authenticateAdmin, async (req, res) => {
-//     try {
-//         const latestUsers = await User.find().sort({ createdAt: -1 }).limit(5).select('name email createdAt');
-
-//         const latestQuizzes = await QuizAttempt.find()
-//             .sort({ createdAt: -1 })
-//             .limit(5)
-//             .populate('userId', 'name email')
-//             .select('score createdAt');
-
-//         const latestContactMessages = await ContactMessage.find()
-//             .sort({ createdAt: -1 })
-//             .limit(5)
-//             .select('name email message createdAt');
-
-//         const latestRoadmaps = await Roadmap.find()
-//             .sort({ createdAt: -1 })
-//             .limit(5)
-//             .select('title createdAt');
-
-//         console.log("Activity Fetched", {
-//             latestUsers,
-//             latestQuizzes,
-//             latestContactMessages,
-//             latestRoadmaps
-//         });
-
-//         res.json({
-//             latestUsers,
-//             latestQuizzes,
-//             latestContactMessages,
-//             latestRoadmaps
-//         });
-//     } catch (error) {
-//         console.error("🔥 Error in /latest-activity route:", error);
-//         res.status(500).json({ message: 'Failed to fetch latest activity', error });
-//     }
-// });
 
 
 
