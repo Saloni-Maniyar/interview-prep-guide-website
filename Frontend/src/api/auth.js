@@ -22,26 +22,9 @@ export const login = async (credentials) => {
     } catch (error) {
         console.error("Login Error:", error.response?.data || error.message);
         throw error.response?.data || { message: "Something went wrong" };
-        //throw new Error(error.response?.data?.message || "Something went wrong during login.");
+        
     }
 };
-
-
-// export const login = async (credentials) => {
-//     try {
-//         const response = await axios.post(`${API_URL}/login`, credentials, {
-//             withCredentials: true
-//         });
-//         return response.data;
-//     } catch (error) {
-//         // Log error details
-//         console.error("Login Error:", error.response?.data || error.message);
-
-//         // Throw clear, readable error message to frontend
-//         throw new Error(error.response?.data?.message || "Something went wrong during login.");
-//     }
-// };
-
 
 export const adminLogin = async (credentials) => {
     try {
