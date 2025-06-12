@@ -9,7 +9,7 @@ router.get('/questions', authenticateAdmin, async (req, res) => {
     res.json(questions);
 });
 
-// ✅ DELETE a question
+//  DELETE a question
 router.delete('/question/:id', authenticateAdmin, async (req, res) => {
     const deletedQuestion = await Question.findByIdAndDelete(req.params.id);
     if (!deletedQuestion) return res.status(404).json({ message: "Question not found" });
@@ -27,7 +27,7 @@ router.post('/questions', authenticateAdmin, async (req, res) => {
 });
 
 
-// ✅ UPDATE a question
+//  UPDATE a question
 router.put('/question/:id', authenticateAdmin, async (req, res) => {
     const updatedQuestion = await Question.findByIdAndUpdate(
         req.params.id,
