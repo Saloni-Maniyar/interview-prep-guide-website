@@ -27,13 +27,7 @@ A full-stack Interview Preparation Guide built using the **MERN Stack** to help 
 
 ---
 
-## 🤖 Note on AI Services
 
-We explored integrating AI for generating mock interview feedback using OpenAI and HuggingFace APIs. However:
-- OpenAI’s API was paid and not feasible for student use.
-- HuggingFace services were unavailable during testing.
-
-So, we implemented a **non-AI feedback system** using keyword matching. Reference files like `huggingFace.js` and `openai.js` are kept in the repo for future upgrades.
 
 ---
 
@@ -196,10 +190,5 @@ interview-prep-guide-website/
 
 ---
 
-## 📬 Contact
 
-For queries or feedback, reach out via the Contact Us form on the website.
-
----
-
-> 📌 This project was developed as part of a college semester project, just like the Nutrition Analyzer website.
+---.
