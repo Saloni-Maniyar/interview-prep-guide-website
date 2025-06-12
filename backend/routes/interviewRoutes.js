@@ -5,9 +5,7 @@ const MockInterviewAnswer = require('../models/MockInterviewAnswer');
 const Progress = require('../models/Progress');
 const { authenticateUser } = require('../middleware/authMiddleware');
 
-// ==========================
-// Utility: Score Calculation
-// ==========================
+
 const calculateAnswerScore = (userAnswer, keywords) => {
     if (!userAnswer || !keywords || keywords.length === 0) return 0;
 
@@ -24,9 +22,7 @@ const calculateAnswerScore = (userAnswer, keywords) => {
     return score;
 };
 
-// ==========================
-// 🔹 Admin: Add Question
-// ==========================
+
 router.post('/add-question', async (req, res) => {
     try {
         const { questionText, type, topic, difficulty, expectedKeywords, idealAnswer } = req.body;
@@ -45,9 +41,7 @@ router.post('/add-question', async (req, res) => {
     }
 });
 
-// ==========================
-// 🔹 User: Get Mock Questions
-// ==========================
+
 router.get('/mock-questions', authenticateUser, async (req, res) => {
     try {
         const techQuestions = await InterviewQuestion.aggregate([
@@ -68,9 +62,7 @@ router.get('/mock-questions', authenticateUser, async (req, res) => {
     }
 });
 
-// ==========================
-// 🔹 User: Submit Interview
-// ==========================
+
 router.post('/submit', authenticateUser, async (req, res) => {
     try {
 
@@ -197,16 +189,7 @@ router.get('/progress', authenticateUser, async (req, res) => {
     }
 });
 
-// //HR Speech based
-// router.get("/hr", async (req, res) => {
-//     try {
-//         const hrQuestions = await InterviewQuestion.find({ type: "HR" });
-//         res.json(hrQuestions);
-//     } catch (error) {
-//         console.error("Error fetching HR questions:", error);
-//         res.status(500).json({ message: "Failed to fetch HR questions." });
-//     }
-// });
+
 
 // HR Speech-Based Interview Questions (with auth)
 router.get("/hr", authenticateUser, async (req, res) => {
